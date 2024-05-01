@@ -29,11 +29,15 @@ write.csv(X, "./unitCircle.csv", row.names = FALSE)
 ```{r}
 # compute a persistence diagram using the Rips filtration built on top of X
 D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
-
+DD <- D
 # switch from the birth-death to the birth-persistence coordinates
 D[,3] <- D[,3] - D[,2] 
 colnames(D)[3] <- "Persistence"
+write.csv(D, "./PD.csv", row.names = FALSE)
+```
 
+
+```{r}
 # construct one-dimensional grid of scale values
 ySeqH0 <- unique(quantile(D[D[,1]==0,3],probs = seq(0,1,by=0.2))) 
 tau <- 0.3 # parameter in [0,1] which controls the size of blocks around each point of the diagram 
