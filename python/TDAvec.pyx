@@ -74,3 +74,12 @@ def computePS(D, homDim, scaleSeq, p=1):
         b2 = pmax(0,beta2-alpha2)*(y-(beta2+alpha2)/2)
         phi.append( np.sum(w*(b1+b2))/(scaleSeq[k+1]-scaleSeq[k]))
     return phi
+
+def computeNL(D, homDim, scaleSeq):
+    x, y = D[homDim][:,0], D[homDim][:,1]
+    lL = (y-x)/sum(y-x)
+    nl = []
+    for k in range(len(scaleSeq)-1):
+        b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
+        nl.append( np.sum(lL*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
+    return nl
