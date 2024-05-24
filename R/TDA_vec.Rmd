@@ -50,3 +50,23 @@ ySeqH1 <- unique(quantile(D[D[,1]==1,3],probs = seq(0,1,by=0.2)))
 computeVPB(D,homDim = 1,xSeqH1,ySeqH1,tau) 
 ```
 
+## computePL
+
+```{r}
+N <- 100 
+set.seed(123)
+# sample N points uniformly from unit circle and add Gaussian noise
+X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
+
+# compute a persistence diagram using the Rips filtration built on top of X
+D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
+
+scaleSeq = seq(0,2,length.out=11) # sequence of scale values
+
+# compute persistence landscape (PL) for homological dimension H_0 with order of landscape k=1
+computePL(D,homDim=0,scaleSeq,k=1)
+
+# compute persistence landscape (PL) for homological dimension H_1 with order of landscape k=1
+computePL(D,homDim=1,scaleSeq,k=1)
+```
+
