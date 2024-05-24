@@ -17,7 +17,12 @@ For each of the functions I should:
 * translate the code into pyx format
 * make sure that results agree with R
 
+Finally, I should collect all files into one library
 
-File structure:
-* R/: all R files live here
-  * `TDA_vec.Rmd`: creates files to compare with using TDAvec R library
+## File structure:
+* `src/`: all source files live here
+    * `computeVPB/`: folder related to computeVPB function:
+        * `computeVPB.R`: R file to produce sample files to compare with
+        * `computeVPB.ipynb`: python notebook that implements computeVPB function in python
+        * `computeVPB.pyx`: cython version of computeVPB function
+        * `computeVPB_test_pyx.ipynb`: python notebook that compares cython and R results
