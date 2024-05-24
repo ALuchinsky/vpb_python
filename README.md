@@ -1,6 +1,10 @@
 Python realization for Vectorized Persistence Block vectorization
 
-The goal is to implement TDAvec library in python using R as a source. The following functions needs to be translated:
+
+The goal is to implement TDAvec library in python using R as a source (see GitHub repository https://github.com/alexey-luchinsky/TDAvec)
+
+
+The following functions needs to be translated:
 * `computeVPB`:     A Vector Summary of the Persistence Block
 
     done
@@ -26,9 +30,9 @@ For each of the functions I should:
 Finally, I should collect all files into one library
 
 ## File structure:
-* `src/`: all source files live here
-    * `computeVPB/`: folder related to computeVPB function:
-        * `computeVPB.R`: R file to produce sample files to compare with
-        * `computeVPB.ipynb`: python notebook that implements computeVPB function in python
-        * `computeVPB.pyx`: cython version of computeVPB function
-        * `computeVPB_test_pyx.ipynb`: python notebook that compares cython and R results
+* python/: python files live here
+    * TDAvec.pyx: Cython version of the package
+    * TDAvec_pyx_test.ipynb: Jupyter notebook, comparison with R results
+    * setup.py: Cython make file. See TDAvec_pyx_test.ipynb for instructions
+* R/: R files live here
+    * TDA_vec.Rmd: extracting test results for different functions
