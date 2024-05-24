@@ -13,11 +13,16 @@ The following functions needs to be translated:
 
     done
 
+* `computePS`:      A Vector Summary of the Persistence Silhouette 
+
+    done
+
+    
 * `computeECC`:     A Vector Summary of the Euler Characteristic Curve
 * `computeNL`:      A Vector Summary of the Normalized Life Curve
 * `computePES`:     A Vector Summary of the Persistent Entropy Summary Function
 * `computePI`:      A Vector Summary of the Persistence Surface
-* `computePS`:      A Vector Summary of the Persistence Silhouette Function
+Function
 * `computeVAB`:     A Vector Summary of the Betti Curve
 
 For each of the functions I should:

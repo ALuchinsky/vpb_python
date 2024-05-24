@@ -17,7 +17,7 @@ library(TDAvec)
 # ComputeVPB
 
 ```{r}
-N <- 100 
+N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
@@ -58,11 +58,26 @@ write.csv(vpb1, "./vpb_1.csv", row.names = FALSE)
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 
 # compute persistence landscape (PL) for homological dimension H_0 with order of landscape k=1
-pl0 <- computePL(D,homDim=0,scaleSeq,k=1)
+pl0 <- computePL(DD,homDim=0,scaleSeq,k=1)
 write.csv(pl0, "./pl_0.csv", row.names = FALSE)
 
 # compute persistence landscape (PL) for homological dimension H_1 with order of landscape k=1
-pl1 <- computePL(D,homDim=1,scaleSeq,k=1)
+pl1 <- computePL(DD, homDim=1, scaleSeq,k=1)
 write.csv(pl1, "./pl_1.csv", row.names = FALSE)
+```
+
+
+## computePS
+
+```{r}
+scaleSeq = seq(0,2,length.out=11) # sequence of scale values
+
+# compute persistence silhouette (PS) for homological dimension H_0
+ps0 <- computePS(DD,homDim=0,scaleSeq,p=1)
+write.csv(ps0, "./ps_0.csv", row.names = FALSE)
+
+# compute persistence silhouette (PS) for homological dimension H_1
+ps1 <- computePS(DD,homDim=1,scaleSeq,p=1)
+write.csv(ps1, "./ps_1.csv", row.names = FALSE)
 ```
 

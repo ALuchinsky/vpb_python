@@ -58,4 +58,19 @@ def computePL(D, homDim, scaleSeq, k=1):
         np.sort(pmax(0, np.apply_along_axis(min, 0, np.array([s-birth, death-s]))))[-k]
         for s in scaleSeq]
     return Lambda
-    
+
+def computePS(D, homDim, scaleSeq, p=1):
+    x, y = D[homDim][:,0], D[homDim][:,1]
+    pp = (y-x)**p
+    w = pp/np.sum(pp)
+
+    phi = []
+    for k in range(len(scaleSeq)-1):
+        alpha1 = pmax(scaleSeq[k], x)
+        alpha2 = pmax(scaleSeq[k], (x+y)/2)
+        beta1 = pmin(scaleSeq[k+1], (x+y)/2)
+        beta2 = pmin(scaleSeq[k+1], y)
+        b1 = pmax(0,beta1-alpha1)*((beta1+alpha1)/2-x)
+        b2 = pmax(0,beta2-alpha2)*(y-(beta2+alpha2)/2)
+        phi.append( np.sum(w*(b1+b2))/(scaleSeq[k+1]-scaleSeq[k]))
+    return phi
