@@ -81,3 +81,17 @@ ps1 <- computePS(DD,homDim=1,scaleSeq,p=1)
 write.csv(ps1, "./ps_1.csv", row.names = FALSE)
 ```
 
+## computeNL
+
+
+```{r}
+scaleSeq = seq(0,2,length.out=11) # sequence of scale values
+
+# compute persistence silhouette (PS) for homological dimension H_0
+nl0 <- computeNL(DD,homDim=0,scaleSeq)
+write.csv(nl0, "./nl_0.csv", row.names = FALSE)
+
+# compute persistence silhouette (PS) for homological dimension H_1
+nl1 <- computeNL(DD,homDim=1,scaleSeq)
+write.csv(nl1, "./nl_1.csv", row.names = FALSE)
+```
