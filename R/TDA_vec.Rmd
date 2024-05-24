@@ -42,31 +42,27 @@ write.csv(D, "./PD.csv", row.names = FALSE)
 ySeqH0 <- unique(quantile(D[D[,1]==0,3],probs = seq(0,1,by=0.2))) 
 tau <- 0.3 # parameter in [0,1] which controls the size of blocks around each point of the diagram 
 # compute VPB for homological dimension H_0
-computeVPB(D,homDim = 0,xSeq=NA,ySeqH0,tau)
+vpb0 <- computeVPB(D,homDim = 0,xSeq=NA,ySeqH0,tau)
+write.csv(vpb0, "./vpb_0.csv", row.names = FALSE)
 
 xSeqH1 <- unique(quantile(D[D[,1]==1,2],probs = seq(0,1,by=0.2)))
 ySeqH1 <- unique(quantile(D[D[,1]==1,3],probs = seq(0,1,by=0.2)))
 # compute VPB for homological dimension H_1
-computeVPB(D,homDim = 1,xSeqH1,ySeqH1,tau) 
+vpb1 <- computeVPB(D,homDim = 1,xSeqH1,ySeqH1,tau) 
+write.csv(vpb1, "./vpb_1.csv", row.names = FALSE)
 ```
 
 ## computePL
 
 ```{r}
-N <- 100 
-set.seed(123)
-# sample N points uniformly from unit circle and add Gaussian noise
-X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
-
-# compute a persistence diagram using the Rips filtration built on top of X
-D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
-
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 
 # compute persistence landscape (PL) for homological dimension H_0 with order of landscape k=1
-computePL(D,homDim=0,scaleSeq,k=1)
+pl0 <- computePL(D,homDim=0,scaleSeq,k=1)
+write.csv(pl0, "./pl_0.csv", row.names = FALSE)
 
 # compute persistence landscape (PL) for homological dimension H_1 with order of landscape k=1
-computePL(D,homDim=1,scaleSeq,k=1)
+pl1 <- computePL(D,homDim=1,scaleSeq,k=1)
+write.csv(pl1, "./pl_1.csv", row.names = FALSE)
 ```
 
