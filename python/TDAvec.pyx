@@ -83,3 +83,11 @@ def computeNL(D, homDim, scaleSeq):
         b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
         nl.append( np.sum(lL*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
     return nl
+
+def computeVAB(D, homDim, scaleSeq):
+    x, y = D[homDim][:,0], D[homDim][:,1]
+    vab = []
+    for k in range( len(scaleSeq)-1):
+        b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
+        vab.append( sum(pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
+    return vab
