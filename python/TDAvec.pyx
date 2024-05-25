@@ -57,7 +57,7 @@ def computePL(D, homDim, scaleSeq, k=1):
     Lambda = [
         np.sort(pmax(0, np.apply_along_axis(min, 0, np.array([s-birth, death-s]))))[-k]
         for s in scaleSeq]
-    return Lambda
+    return np.array(Lambda)
 
 def computePS(D, homDim, scaleSeq, p=1):
     x, y = D[homDim][:,0], D[homDim][:,1]
@@ -73,7 +73,7 @@ def computePS(D, homDim, scaleSeq, p=1):
         b1 = pmax(0,beta1-alpha1)*((beta1+alpha1)/2-x)
         b2 = pmax(0,beta2-alpha2)*(y-(beta2+alpha2)/2)
         phi.append( np.sum(w*(b1+b2))/(scaleSeq[k+1]-scaleSeq[k]))
-    return phi
+    return np.array(phi)
 
 def computeNL(D, homDim, scaleSeq):
     x, y = D[homDim][:,0], D[homDim][:,1]
@@ -82,7 +82,7 @@ def computeNL(D, homDim, scaleSeq):
     for k in range(len(scaleSeq)-1):
         b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
         nl.append( np.sum(lL*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
-    return nl
+    return np.array(nl)
 
 def computeVAB(D, homDim, scaleSeq):
     x, y = D[homDim][:,0], D[homDim][:,1]
@@ -90,4 +90,4 @@ def computeVAB(D, homDim, scaleSeq):
     for k in range( len(scaleSeq)-1):
         b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
         vab.append( sum(pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
-    return vab
+    return np.array(vab)
