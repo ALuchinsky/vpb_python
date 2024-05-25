@@ -26,6 +26,9 @@ The following functions needs to be translated:
     done
 
 * `computeECC`:     A Vector Summary of the Euler Characteristic Curve
+
+    done
+
 * `computePES`:     A Vector Summary of the Persistent Entropy Summary Function
 * `computePI`:      A Vector Summary of the Persistence Surface
 Function
