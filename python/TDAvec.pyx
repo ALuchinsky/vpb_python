@@ -97,3 +97,14 @@ def computeECC(D, maxhomDim, scaleSeq):
     for d in range(maxhomDim+1):
         ecc = ecc + (-1)**d * computeVAB(D, d, scaleSeq)
     return ecc
+
+def computePES(D, homDim, scaleSeq):
+    x, y = D[homDim][:,0], D[homDim][:,1]
+    lL = (y-x)/np.sum(y-x)
+    entr = -lL*np.log10(lL)/np.log10(2)
+    pes = []
+    for k in range( len(scaleSeq)-1):
+        b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
+        pes.append( np.sum(entr*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
+    return pes
+    
