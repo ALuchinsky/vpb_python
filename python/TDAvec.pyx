@@ -91,3 +91,9 @@ def computeVAB(D, homDim, scaleSeq):
         b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
         vab.append( sum(pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
     return np.array(vab)
+
+def computeECC(D, maxhomDim, scaleSeq):
+    ecc = np.zeros( len(scaleSeq)-1)
+    for d in range(maxhomDim+1):
+        ecc = ecc + (-1)**d * computeVAB(D, d, scaleSeq)
+    return ecc
