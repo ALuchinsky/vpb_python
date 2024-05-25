@@ -108,3 +108,12 @@ vab_1 <- computeVAB(DD,homDim=1,scaleSeq)
 write.csv(vab_1, "./vab_1.csv", row.names = FALSE)
 ```
 
+# computeECC
+
+```{r}
+# compute ECC
+ecc_0 <- computeECC(DD, 0, scaleSeq)
+write.csv(ecc_0, "./ecc_0.csv", row.names = FALSE)
+ecc_1 <- computeECC(DD, 1, scaleSeq)
+write.csv(ecc_1, "./ecc_1.csv", row.names = FALSE)
+```
