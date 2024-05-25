@@ -23,7 +23,7 @@ The following functions needs to be translated:
 
 * `computeVAB`:     A Vector Summary of the Betti Curve
 
-    working
+    done
 
 * `computeECC`:     A Vector Summary of the Euler Characteristic Curve
 * `computePES`:     A Vector Summary of the Persistent Entropy Summary Function
