@@ -95,3 +95,16 @@ write.csv(nl0, "./nl_0.csv", row.names = FALSE)
 nl1 <- computeNL(DD,homDim=1,scaleSeq)
 write.csv(nl1, "./nl_1.csv", row.names = FALSE)
 ```
+
+## computeVAB
+
+```{r}
+# compute vector of averaged Bettis (VAB) for homological dimension H_0
+vab_0 <- computeVAB(DD,homDim=0,scaleSeq)
+write.csv(vab_0, "./vab_0.csv", row.names = FALSE)
+
+# compute vector of averaged Bettis (VAB) for homological dimension H_1
+vab_1 <- computeVAB(DD,homDim=1,scaleSeq)
+write.csv(vab_1, "./vab_1.csv", row.names = FALSE)
+```
+

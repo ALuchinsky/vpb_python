@@ -19,13 +19,16 @@ The following functions needs to be translated:
 
 * `computeNL`:      A Vector Summary of the Normalized Life Curve
 
-    work...
+    done
+
+* `computeVAB`:     A Vector Summary of the Betti Curve
+
+    working
 
 * `computeECC`:     A Vector Summary of the Euler Characteristic Curve
 * `computePES`:     A Vector Summary of the Persistent Entropy Summary Function
 * `computePI`:      A Vector Summary of the Persistence Surface
 Function
-* `computeVAB`:     A Vector Summary of the Betti Curve
 
 For each of the functions I should:
 * translate the code from R to python in the python notebook
