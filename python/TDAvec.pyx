@@ -107,4 +107,49 @@ def computePES(D, homDim, scaleSeq):
         b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
         pes.append( np.sum(entr*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
     return pes
-    
+
+from scipy.stats import norm
+def pnorm(x, mean, sd):
+    return norm.cdf(x, mean, sd)
+
+def outer(x, y):
+    return np.array([x_*y_ for y_ in y for x_ in x])
+
+def PSurfaceH0(point, y_lower, y_upper, sigma, maxP):
+    y = point[1]
+    out2 = pnorm(y_upper, y, sigma) - pnorm(y_lower, y, sigma)
+    wgt = y/maxP if y<maxP else 1
+    return wgt*out2
+def PSurfaceHk(point, y_lower, y_upper, x_lower, x_upper, sigma, maxP):
+    x, y = point[0], point[1]
+    out1 = pnorm(x_upper,x,sigma) - pnorm(x_lower,x,sigma)
+    out2 = pnorm(y_upper,y,sigma) - pnorm(y_lower,y,sigma)
+    wgt = y/maxP if y<maxP else 1
+    return wgt*outer(out1, out2)
+
+def computePI(PD, homDim, xSeq, ySeq, sigma):
+    D_ = np.transpose(PD[homDim])
+    n_rows = D_.shape[0]
+
+    resB = len(xSeq) - 1
+    resP = len(ySeq)-1
+    minP, maxP = ySeq[0], ySeq[-1]
+    dy = (maxP-minP)/resP
+    y_lower = np.arange(minP, maxP, dy)
+    y_upper = y_lower + dy
+
+    nSize = resP if homDim == 0 else resP*resB
+    Psurf_mat = np.zeros( (nSize, n_rows))
+    if homDim==0:
+        for i in range(n_rows):
+            Psurf_mat[:, i] = PSurfaceH0(D_[i, :], y_lower, y_upper, sigma, maxP)
+    else:
+        minB, maxB = xSeq[0], xSeq[-1]
+        dx = (maxB-minB)/resB
+        x_lower = np.arange(minB, maxB, dx)
+        x_upper = x_lower + dx
+        for i in range(n_rows):
+            Psurf_mat[:, i] = PSurfaceHk(D_[i, :], y_lower, y_upper, x_lower, x_upper, sigma, maxP)
+    out = np.sum(Psurf_mat, axis = 1)
+    return out
+

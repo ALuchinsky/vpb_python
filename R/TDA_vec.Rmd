@@ -108,7 +108,7 @@ vab_1 <- computeVAB(DD,homDim=1,scaleSeq)
 write.csv(vab_1, "./vab_1.csv", row.names = FALSE)
 ```
 
-# computeECC
+## computeECC
 
 ```{r}
 # compute ECC
@@ -117,3 +117,37 @@ write.csv(ecc_0, "./ecc_0.csv", row.names = FALSE)
 ecc_1 <- computeECC(DD, 1, scaleSeq)
 write.csv(ecc_1, "./ecc_1.csv", row.names = FALSE)
 ```
+
+## computePES
+
+```{r}
+# compute ECC
+pes_0 <- computePES(DD, 0, scaleSeq)
+write.csv(pes_0, "./pes_0.csv", row.names = FALSE)
+pes_1 <- computePES(DD, 1, scaleSeq)
+write.csv(pes_1, "./pes_1.csv", row.names = FALSE)
+```
+
+## computePI
+
+```{r}
+resB <- 5 # resolution (or grid size) along the birth axis
+resP <- 5 # resolution (or grid size) along the persistence axis 
+
+# compute PI for homological dimension H_0
+minPH0 <- min(D[D[,1]==0,3]); maxPH0 <- max(D[D[,1]==0,3])
+ySeqH0 <- seq(minPH0,maxPH0,length.out=resP+1)
+sigma <- 0.5*(maxPH0-minPH0)/resP 
+pi0 <- computePI(D,homDim=0,xSeq=NA,ySeqH0,sigma) 
+write.csv(pi0, "./pi_0.csv", row.names = FALSE)
+
+# compute PI for homological dimension H_1
+minBH1 <- min(D[D[,1]==1,2]); maxBH1 <- max(D[D[,1]==1,2])
+minPH1 <- min(D[D[,1]==1,3]); maxPH1 <- max(D[D[,1]==1,3])
+xSeqH1 <- seq(minBH1,maxBH1,length.out=resB+1)
+ySeqH1 <- seq(minPH1,maxPH1,length.out=resP+1)
+sigma <- 0.5*(maxPH1-minPH1)/resP
+pi1 <- computePI(D,homDim=1,xSeqH1,ySeqH1,sigma) 
+write.csv(pi1, "./pi_1.csv", row.names = FALSE)
+```
+

@@ -30,8 +30,12 @@ The following functions needs to be translated:
     done
 
 * `computePES`:     A Vector Summary of the Persistent Entropy Summary Function
+
+    done
+
 * `computePI`:      A Vector Summary of the Persistence Surface
-Function
+
+    done
 
 For each of the functions I should:
 * translate the code from R to python in the python notebook
