@@ -10,9 +10,9 @@ def DiagToPD(D):
     Returns:
     - PD (list): A list of persistence diagrams (PD), where each PD is represented as a numpy array.
       Each PD contains two columns: the first column represents the birth values of the persistence pairs,
-      and the second column represents the death values minus the birth values.
+      and the second column represents the persistence, i.e. the death values minus the birth values.
     """
-    PD = [ np.array([D[dim][:,0], D[dim][:,1] - D[dim][:,0]]) for dim in range(len(D))]
+    PD = [ np.transpose(np.array([D[dim][:,0], D[dim][:,1] - D[dim][:,0]])) for dim in range(len(D))]
     return PD
 
 def computeVPB_dim0(x, y, ySeq, lam):
@@ -114,8 +114,8 @@ def computeVPB(PD, homDim, xSeq, ySeq, tau=0.3):
     Returns:
         numpy.ndarray: The VPB matrix.
     """
-    x = PD[homDim][0]
-    y = PD[homDim][1]
+    x = PD[homDim][:,0]
+    y = PD[homDim][:,1]
     lam = tau * y
     if homDim == 0:
         return computeVPB_dim0(x, y, ySeq, lam)
@@ -332,7 +332,7 @@ def computePI(PD, homDim, xSeq, ySeq, sigma):
         numpy.ndarray: The surface probability density function values for each data point.
 
     """
-    D_ = np.transpose(PD[homDim])
+    D_ = PD[homDim]
     n_rows = D_.shape[0]
 
     resB = len(xSeq) - 1
