@@ -1,4 +1,7 @@
+#cython: language_level=3, boundscheck=False, wraparound=False, initializedcheck=False, cdivision=True
 import numpy as np
+cimport numpy as np
+from cython.parallel import prange
 
 def DiagToPD(D):
     """
@@ -15,7 +18,18 @@ def DiagToPD(D):
     PD = [ np.transpose(np.array([D[dim][:,0], D[dim][:,1] - D[dim][:,0]])) for dim in range(len(D))]
     return PD
 
-def computeVPB_dim0(x, y, ySeq, lam):
+def cy_diff(np.ndarray[np.float64_t, ndim=1] x):
+    cdef int n = x.size
+    cdef np.ndarray[np.float64_t, ndim=1] y = np.zeros(n-1)
+    cdef int i
+    for i in range(n-1):
+        y[i] = x[i+1] - x[i]
+    return y
+
+def computeVPB_dim0(np.ndarray[np.float64_t, ndim=1] x, 
+                    np.ndarray[np.float64_t, ndim=1] y, 
+                    np.ndarray[np.float64_t, ndim=1] ySeq, 
+                    np.ndarray[np.float64_t, ndim=1] lam):
     """
     Compute the VPB values for dimension 0.
 
@@ -28,18 +42,21 @@ def computeVPB_dim0(x, y, ySeq, lam):
     Returns:
         numpy.ndarray: The computed VPB values.
     """
-    dy = np.diff(ySeq)
-    vpb = np.zeros( len(dy))
-    for i in range(len(dy)):
+    cdef int n = ySeq.shape[0] - 1
+    cdef int nPoints = y.shape[0]
+    cdef np.ndarray[np.float64_t, ndim=1] vpb = np.zeros(n, dtype=np.float64)
+    cdef int i, j
+    cdef double c, d, y_cd, lam_cd, yMin, yMax
+    for i in range(n):
         c = ySeq[i]
         d = ySeq[i+1]
-        for j in range( len(y)):
-            if c - lam[j] < y[j] and y[j] < d + lam[j]:
+        for j in range(nPoints):
+            if c - lam[j] < y[j] < d + lam[j]:
                 y_cd = y[j]
                 lam_cd = lam[j]
                 yMin = max(c, y_cd - lam_cd)
                 yMax = min(d, y_cd + lam_cd)
-                vpb[i] += 0.5*(yMax**2 - yMin**2)/dy[i]
+                vpb[i] += 0.5 * (yMax**2 - yMin**2) / (ySeq[i+1] - ySeq[i])
     return vpb
 
 def pmax(num, vec):
