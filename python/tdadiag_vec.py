@@ -33,6 +33,7 @@ class tdadiag_vect:
     diag = None
     pd = None
     threshold = 2
+    max_scale = None
 
     def getData(self):
         return self.data
@@ -47,6 +48,7 @@ class tdadiag_vect:
         self.data = data_
         self.diag = None
         self.pd = None
+        self.max_scale = None
 
     def calcDiag(self, threshold_ = None, inf = None):
         if threshold_ is None:
@@ -56,6 +58,7 @@ class tdadiag_vect:
             self.diag[0][-1, 1] = inf
         else:
             self.diag[0] = self.diag[0][:-1,:]
+        self.max_scale = np.max(self.diag[0][:,1])
 
 
         return self.diag
@@ -69,7 +72,7 @@ class tdadiag_vect:
         self.setData(data_)
         self.setThreshold(threshold_)
 
-    def computePS(self, homDim, scaleSeq, p=1):
+    def computePS(self, homDim = 1, scaleSeq = None, nGrid = 11, p=1):
         """
         Compute the Persistence Silhouette vectorization for a given homological dimension, scale sequence, and power.
 
@@ -82,6 +85,8 @@ class tdadiag_vect:
         Returns:
             numpy.ndarray: The persistence spectrum vector.
         """
+        if scaleSeq is None:
+            scaleSeq = np.linspace(0, self.max_scale, nGrid)
         D = self.getDiag()
         x, y = D[homDim][:,0], D[homDim][:,1]
         pp = (y-x)**p
@@ -97,5 +102,29 @@ class tdadiag_vect:
             b2 = pmax(0,beta2-alpha2)*(y-(beta2+alpha2)/2)
             phi.append( np.sum(w*(b1+b2))/(scaleSeq[k+1]-scaleSeq[k]))
         return np.array(phi)
+    
+    def computeNL(self, homDim = 1, scaleSeq = None, nGrid = 11, p=1):
+        """
+        Compute theNormalized Life Curve vectorization for a given homological dimension, scale sequence, and power.
+
+        Parameters:
+            D (numpy.ndarray): Persistence diagram (array of birth-death arrays for each dimension).
+            homDim (int): The homological dimension along which the NL is computed.
+            scaleSeq (numpy.ndarray): The sequence of scale values.
+
+        Returns:
+            numpy.ndarray: The nonlinear landscape vector.
+        """
+        if scaleSeq is None:
+            scaleSeq = np.linspace(0, self.max_scale, nGrid)
+        D = self.getDiag()
+        x, y = D[homDim][:,0], D[homDim][:,1]
+        lL = (y-x)/sum(y-x)
+        nl = []
+        for k in range(len(scaleSeq)-1):
+            b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
+            nl.append( np.sum(lL*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
+        return np.array(nl)
+
 
         
