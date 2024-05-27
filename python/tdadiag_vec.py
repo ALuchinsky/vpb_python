@@ -34,6 +34,7 @@ class tdadiag_vect:
     pd = None
     threshold = 2
     max_scale = None
+    scale = None
 
     def getData(self):
         return self.data
@@ -49,6 +50,15 @@ class tdadiag_vect:
         self.diag = None
         self.pd = None
         self.max_scale = None
+
+    def setScale(self, scale_ = None, nGrid = 11):
+        if scale_ is None:
+            scale_ = np.linspace(0, self.max_scale, nGrid)
+        self.scale = scale_
+        return self.scale
+
+    def getScale(self):
+        return self.scale
 
     def calcDiag(self, threshold_ = None, inf = None):
         if threshold_ is None:
@@ -72,7 +82,7 @@ class tdadiag_vect:
         self.setData(data_)
         self.setThreshold(threshold_)
 
-    def computePS(self, homDim = 1, scaleSeq = None, nGrid = 11, p=1):
+    def computePS(self, homDim = 1, scaleSeq_ = None, nGrid = 11, p=1):
         """
         Compute the Persistence Silhouette vectorization for a given homological dimension, scale sequence, and power.
 
@@ -85,8 +95,7 @@ class tdadiag_vect:
         Returns:
             numpy.ndarray: The persistence spectrum vector.
         """
-        if scaleSeq is None:
-            scaleSeq = np.linspace(0, self.max_scale, nGrid)
+        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
         D = self.getDiag()
         x, y = D[homDim][:,0], D[homDim][:,1]
         pp = (y-x)**p
