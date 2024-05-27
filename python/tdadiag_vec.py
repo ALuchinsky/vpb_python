@@ -112,7 +112,7 @@ class tdadiag_vect:
             phi.append( np.sum(w*(b1+b2))/(scaleSeq[k+1]-scaleSeq[k]))
         return np.array(phi)
     
-    def computeNL(self, homDim = 1, scaleSeq = None, nGrid = 11, p=1):
+    def computeNL(self, homDim = 1, scaleSeq_ = None, nGrid = 11, p=1):
         """
         Compute theNormalized Life Curve vectorization for a given homological dimension, scale sequence, and power.
 
@@ -124,8 +124,7 @@ class tdadiag_vect:
         Returns:
             numpy.ndarray: The nonlinear landscape vector.
         """
-        if scaleSeq is None:
-            scaleSeq = np.linspace(0, self.max_scale, nGrid)
+        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
         D = self.getDiag()
         x, y = D[homDim][:,0], D[homDim][:,1]
         lL = (y-x)/sum(y-x)
@@ -135,7 +134,7 @@ class tdadiag_vect:
             nl.append( np.sum(lL*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
         return np.array(nl)
 
-    def computeVAB(self, homDim = 1, scaleSeq = None, nGrid = 11):
+    def computeVAB(self, homDim = 1, scaleSeq_ = None, nGrid = 11):
         """
         Compute the Vector Summary of the Betti Curve    (VAB) vectorization for a given homological dimension, scale sequence, and power.
 
@@ -147,8 +146,28 @@ class tdadiag_vect:
         Returns:
             numpy.ndarray: The VAB vector.
         """
-        if scaleSeq is None:
-            scaleSeq = np.linspace(0, self.max_scale, nGrid)
+        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
+        D = self.getDiag()
+        x, y = D[homDim][:,0], D[homDim][:,1]
+        vab = []
+        for k in range( len(scaleSeq)-1):
+            b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
+            vab.append( sum(pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
+        return np.array(vab)
+    
+    def computeVAB(self, homDim = 1, scaleSeq_ = None, nGrid = 11):
+        """
+        Compute the Vector Summary of the Betti Curve    (VAB) vectorization for a given homological dimension, scale sequence, and power.
+
+        Parameters:
+            D (numpy.ndarray): Persistence diagram (array of birth-death arrays for each dimension).
+            homDim (int): The homological dimension along which the VAB is computed.
+            scaleSeq (numpy.ndarray): The sequence of scale values.
+
+        Returns:
+            numpy.ndarray: The VAB vector.
+        """
+        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
         D = self.getDiag()
         x, y = D[homDim][:,0], D[homDim][:,1]
         vab = []
@@ -157,4 +176,22 @@ class tdadiag_vect:
             vab.append( sum(pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
         return np.array(vab)
 
-        
+
+    def computeECC(self, homDim = 1, scaleSeq_ = None, nGrid = 11):
+        """
+        Compute the Euler Characteristic Curve (ECC) vectorization for a given homological dimension, maximum homological dimension, and scale sequence.
+
+        Parameters:
+            D (numpy.ndarray): Persistence diagram (array of birth-death arrays for each dimension).
+            maxhomDim (int): The maximum homological dimension.
+            scaleSeq (numpy.ndarray): The sequence of scale values.
+
+        Returns:
+            numpy.ndarray: The ECC vector.
+        """
+        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
+        D = self.getDiag()
+        ecc = np.zeros( len(scaleSeq)-1)
+        for d in range(homDim+1):
+            ecc = ecc + (-1)**d * self.computeVAB(d, scaleSeq, nGrid)
+        return ecc
