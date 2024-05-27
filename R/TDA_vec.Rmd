@@ -17,7 +17,7 @@ library(TDAvec)
 # ComputeVPB
 
 ```{r}
-N <- 100 
+N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
@@ -42,31 +42,112 @@ write.csv(D, "./PD.csv", row.names = FALSE)
 ySeqH0 <- unique(quantile(D[D[,1]==0,3],probs = seq(0,1,by=0.2))) 
 tau <- 0.3 # parameter in [0,1] which controls the size of blocks around each point of the diagram 
 # compute VPB for homological dimension H_0
-computeVPB(D,homDim = 0,xSeq=NA,ySeqH0,tau)
+vpb0 <- computeVPB(D,homDim = 0,xSeq=NA,ySeqH0,tau)
+write.csv(vpb0, "./vpb_0.csv", row.names = FALSE)
 
 xSeqH1 <- unique(quantile(D[D[,1]==1,2],probs = seq(0,1,by=0.2)))
 ySeqH1 <- unique(quantile(D[D[,1]==1,3],probs = seq(0,1,by=0.2)))
 # compute VPB for homological dimension H_1
-computeVPB(D,homDim = 1,xSeqH1,ySeqH1,tau) 
+vpb1 <- computeVPB(D,homDim = 1,xSeqH1,ySeqH1,tau) 
+write.csv(vpb1, "./vpb_1.csv", row.names = FALSE)
 ```
 
 ## computePL
 
 ```{r}
-N <- 100 
-set.seed(123)
-# sample N points uniformly from unit circle and add Gaussian noise
-X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
-
-# compute a persistence diagram using the Rips filtration built on top of X
-D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
-
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 
 # compute persistence landscape (PL) for homological dimension H_0 with order of landscape k=1
-computePL(D,homDim=0,scaleSeq,k=1)
+pl0 <- computePL(DD,homDim=0,scaleSeq,k=1)
+write.csv(pl0, "./pl_0.csv", row.names = FALSE)
 
 # compute persistence landscape (PL) for homological dimension H_1 with order of landscape k=1
-computePL(D,homDim=1,scaleSeq,k=1)
+pl1 <- computePL(DD, homDim=1, scaleSeq,k=1)
+write.csv(pl1, "./pl_1.csv", row.names = FALSE)
+```
+
+
+## computePS
+
+```{r}
+scaleSeq = seq(0,2,length.out=11) # sequence of scale values
+
+# compute persistence silhouette (PS) for homological dimension H_0
+ps0 <- computePS(DD,homDim=0,scaleSeq,p=1)
+write.csv(ps0, "./ps_0.csv", row.names = FALSE)
+
+# compute persistence silhouette (PS) for homological dimension H_1
+ps1 <- computePS(DD,homDim=1,scaleSeq,p=1)
+write.csv(ps1, "./ps_1.csv", row.names = FALSE)
+```
+
+## computeNL
+
+
+```{r}
+scaleSeq = seq(0,2,length.out=11) # sequence of scale values
+
+# compute persistence silhouette (PS) for homological dimension H_0
+nl0 <- computeNL(DD,homDim=0,scaleSeq)
+write.csv(nl0, "./nl_0.csv", row.names = FALSE)
+
+# compute persistence silhouette (PS) for homological dimension H_1
+nl1 <- computeNL(DD,homDim=1,scaleSeq)
+write.csv(nl1, "./nl_1.csv", row.names = FALSE)
+```
+
+## computeVAB
+
+```{r}
+# compute vector of averaged Bettis (VAB) for homological dimension H_0
+vab_0 <- computeVAB(DD,homDim=0,scaleSeq)
+write.csv(vab_0, "./vab_0.csv", row.names = FALSE)
+
+# compute vector of averaged Bettis (VAB) for homological dimension H_1
+vab_1 <- computeVAB(DD,homDim=1,scaleSeq)
+write.csv(vab_1, "./vab_1.csv", row.names = FALSE)
+```
+
+## computeECC
+
+```{r}
+# compute ECC
+ecc_0 <- computeECC(DD, 0, scaleSeq)
+write.csv(ecc_0, "./ecc_0.csv", row.names = FALSE)
+ecc_1 <- computeECC(DD, 1, scaleSeq)
+write.csv(ecc_1, "./ecc_1.csv", row.names = FALSE)
+```
+
+## computePES
+
+```{r}
+# compute ECC
+pes_0 <- computePES(DD, 0, scaleSeq)
+write.csv(pes_0, "./pes_0.csv", row.names = FALSE)
+pes_1 <- computePES(DD, 1, scaleSeq)
+write.csv(pes_1, "./pes_1.csv", row.names = FALSE)
+```
+
+## computePI
+
+```{r}
+resB <- 5 # resolution (or grid size) along the birth axis
+resP <- 5 # resolution (or grid size) along the persistence axis 
+
+# compute PI for homological dimension H_0
+minPH0 <- min(D[D[,1]==0,3]); maxPH0 <- max(D[D[,1]==0,3])
+ySeqH0 <- seq(minPH0,maxPH0,length.out=resP+1)
+sigma <- 0.5*(maxPH0-minPH0)/resP 
+pi0 <- computePI(D,homDim=0,xSeq=NA,ySeqH0,sigma) 
+write.csv(pi0, "./pi_0.csv", row.names = FALSE)
+
+# compute PI for homological dimension H_1
+minBH1 <- min(D[D[,1]==1,2]); maxBH1 <- max(D[D[,1]==1,2])
+minPH1 <- min(D[D[,1]==1,3]); maxPH1 <- max(D[D[,1]==1,3])
+xSeqH1 <- seq(minBH1,maxBH1,length.out=resB+1)
+ySeqH1 <- seq(minPH1,maxPH1,length.out=resP+1)
+sigma <- 0.5*(maxPH1-minPH1)/resP
+pi1 <- computePI(D,homDim=1,xSeqH1,ySeqH1,sigma) 
+write.csv(pi1, "./pi_1.csv", row.names = FALSE)
 ```
 
