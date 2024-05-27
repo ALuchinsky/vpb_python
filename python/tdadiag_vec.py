@@ -51,19 +51,23 @@ class tdadiag_vect:
         self.pd = None
         self.max_scale = None
 
-    def setScale(self, scale_ = None, nGrid = 11):
-        if scale_ is None:
-            scale_ = np.linspace(0, self.max_scale, nGrid)
-        self.scale = scale_
+    def setScale(self, scale = None, nGrid = 11, quantiles = False):
+        if scale is None:
+            if quantiles:
+                pd = self.getDiag()
+                scale = np.quantile(pd[1][:,1], np.linspace(0, 1, nGrid))
+            else:
+                scale = np.linspace(0, self.max_scale, nGrid)
+        self.scale = scale
         return self.scale
 
     def getScale(self):
         return self.scale
 
-    def calcDiag(self, threshold_ = None, inf = None):
-        if threshold_ is None:
-            threshold_ = self.threshold
-        self.diag = ripser.ripser(self.data, thresh=threshold_)["dgms"]
+    def calcDiag(self, threshold = None, inf = None):
+        if threshold is None:
+            threshold = self.threshold
+        self.diag = ripser.ripser(self.data, thresh=threshold)["dgms"]
         if inf is not None:
             self.diag[0][-1, 1] = inf
         else:
@@ -78,11 +82,11 @@ class tdadiag_vect:
             self.calcDiag()
         return self.diag
 
-    def __init__(self, data_ = None, threshold_ = 2) -> None:
-        self.setData(data_)
-        self.setThreshold(threshold_)
+    def __init__(self, data = None, threshold = 2) -> None:
+        self.setData(data)
+        self.setThreshold(threshold)
 
-    def computePS(self, homDim = 1, scaleSeq_ = None, nGrid = 11, p=1):
+    def computePS(self, homDim = 1, scaleSeq = None, nGrid = 11, p=1, quantiles = False):
         """
         Compute the Persistence Silhouette vectorization for a given homological dimension, scale sequence, and power.
 
@@ -95,7 +99,7 @@ class tdadiag_vect:
         Returns:
             numpy.ndarray: The persistence spectrum vector.
         """
-        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
+        scaleSeq = self.setScale(scale = scaleSeq, nGrid = nGrid, quantiles = quantiles)
         D = self.getDiag()
         x, y = D[homDim][:,0], D[homDim][:,1]
         pp = (y-x)**p
@@ -112,7 +116,7 @@ class tdadiag_vect:
             phi.append( np.sum(w*(b1+b2))/(scaleSeq[k+1]-scaleSeq[k]))
         return np.array(phi)
     
-    def computeNL(self, homDim = 1, scaleSeq_ = None, nGrid = 11, p=1):
+    def computeNL(self, homDim = 1, scaleSeq = None, nGrid = 11, p=1, quantiles = False):
         """
         Compute theNormalized Life Curve vectorization for a given homological dimension, scale sequence, and power.
 
@@ -124,7 +128,7 @@ class tdadiag_vect:
         Returns:
             numpy.ndarray: The nonlinear landscape vector.
         """
-        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
+        scaleSeq = self.setScale(scale = scaleSeq, nGrid = nGrid, quantiles = quantiles)
         D = self.getDiag()
         x, y = D[homDim][:,0], D[homDim][:,1]
         lL = (y-x)/sum(y-x)
@@ -134,7 +138,7 @@ class tdadiag_vect:
             nl.append( np.sum(lL*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
         return np.array(nl)
 
-    def computeVAB(self, homDim = 1, scaleSeq_ = None, nGrid = 11):
+    def computeVAB(self, homDim = 1, scaleSeq = None, nGrid = 11, quantiles = False):
         """
         Compute the Vector Summary of the Betti Curve    (VAB) vectorization for a given homological dimension, scale sequence, and power.
 
@@ -146,7 +150,7 @@ class tdadiag_vect:
         Returns:
             numpy.ndarray: The VAB vector.
         """
-        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
+        scaleSeq = self.setScale(scale = scaleSeq, nGrid = nGrid, quantiles = quantiles)
         D = self.getDiag()
         x, y = D[homDim][:,0], D[homDim][:,1]
         vab = []
@@ -155,7 +159,7 @@ class tdadiag_vect:
             vab.append( sum(pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
         return np.array(vab)
     
-    def computeVAB(self, homDim = 1, scaleSeq_ = None, nGrid = 11):
+    def computeVAB(self, homDim = 1, scaleSeq = None, nGrid = 11, quantiles = False):
         """
         Compute the Vector Summary of the Betti Curve    (VAB) vectorization for a given homological dimension, scale sequence, and power.
 
@@ -167,7 +171,7 @@ class tdadiag_vect:
         Returns:
             numpy.ndarray: The VAB vector.
         """
-        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
+        scaleSeq = self.setScale(scale = scaleSeq, nGrid = nGrid, quantiles = quantiles)
         D = self.getDiag()
         x, y = D[homDim][:,0], D[homDim][:,1]
         vab = []
@@ -177,7 +181,7 @@ class tdadiag_vect:
         return np.array(vab)
 
 
-    def computeECC(self, homDim = 1, scaleSeq_ = None, nGrid = 11):
+    def computeECC(self, homDim = 1, scaleSeq = None, nGrid = 11, quantiles = False):
         """
         Compute the Euler Characteristic Curve (ECC) vectorization for a given homological dimension, maximum homological dimension, and scale sequence.
 
@@ -189,7 +193,7 @@ class tdadiag_vect:
         Returns:
             numpy.ndarray: The ECC vector.
         """
-        scaleSeq = self.setScale(scale_ = scaleSeq_, nGrid = nGrid)
+        scaleSeq = self.setScale(scale = scaleSeq, nGrid = nGrid, quantiles = quantiles)
         D = self.getDiag()
         ecc = np.zeros( len(scaleSeq)-1)
         for d in range(homDim+1):
