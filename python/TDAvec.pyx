@@ -3,6 +3,9 @@ import numpy as np
 cimport numpy as np
 from cython.parallel import prange
 
+
+
+
 def DiagToPD(D):
     """
     Generates a list of persistence diagrams (PD) from a given list of persistence diagrams (D).
@@ -18,13 +21,6 @@ def DiagToPD(D):
     PD = [ np.transpose(np.array([D[dim][:,0], D[dim][:,1] - D[dim][:,0]])) for dim in range(len(D))]
     return PD
 
-def cy_diff(np.ndarray[np.float64_t, ndim=1] x):
-    cdef int n = x.size
-    cdef np.ndarray[np.float64_t, ndim=1] y = np.zeros(n-1)
-    cdef int i
-    for i in range(n-1):
-        y[i] = x[i+1] - x[i]
-    return y
 
 def computeVPB_dim0(np.ndarray[np.float64_t, ndim=1] x, 
                     np.ndarray[np.float64_t, ndim=1] y, 
@@ -42,7 +38,7 @@ def computeVPB_dim0(np.ndarray[np.float64_t, ndim=1] x,
     Returns:
         numpy.ndarray: The computed VPB values.
     """
-    cdef int n = ySeq.shape[0] - 1
+    cdef Py_ssize_t n = ySeq.shape[0] - 1
     cdef int nPoints = y.shape[0]
     cdef np.ndarray[np.float64_t, ndim=1] vpb = np.zeros(n, dtype=np.float64)
     cdef int i, j
@@ -85,7 +81,11 @@ def pmin(num, vec):
     """
     return np.array([min(num, vec[i_]) for i_ in range(vec.size)])
 
-def computeVPB_dim1(x, y, xSeq, ySeq, lam):
+def computeVPB_dim1(np.ndarray[np.float64_t, ndim=1] x, 
+                    np.ndarray[np.float64_t, ndim=1] y, 
+                    np.ndarray[np.float64_t, ndim=1] xSeq, 
+                    np.ndarray[np.float64_t, ndim=1] ySeq, 
+                    np.ndarray[np.float64_t, ndim=1] lam):
     """
     Compute the Vector Persistence Block (VPB) vectorization for a given set of points in dimension 1.
 
@@ -99,23 +99,37 @@ def computeVPB_dim1(x, y, xSeq, ySeq, lam):
     Returns:
         numpy.ndarray: The VPB matrix.
     """
-    dx = np.diff(xSeq)
-    dy = np.diff(ySeq)
-    vpb = np.zeros( (dx.size, dy.size) )
-    for i in range(dx.size):
+    cdef int n = xSeq.shape[0] - 1
+    cdef int m = ySeq.shape[0] - 1
+    cdef np.ndarray[np.float64_t, ndim=1] dx = np.diff(xSeq)
+    cdef np.ndarray[np.float64_t, ndim=1] dy = np.diff(ySeq)
+    cdef np.ndarray[np.float64_t, ndim=2] vpb = np.zeros((n, m), dtype=np.float64)
+    cdef int i, j, k, num_inds
+    cdef double a, b, c, d, add
+    cdef np.ndarray[np.int_t, ndim=1] inds
+    cdef np.ndarray[np.float64_t, ndim=1] xInd, yInd, lamInd, xMin, xMax, yMin, yMax
+
+    for i in range(n):
         a, b = xSeq[i], xSeq[i+1]
-        for j in range(dy.size):
+        for j in range(m):
             c, d = ySeq[j], ySeq[j+1]
-            xCond = (x+lam >= a) & (x-lam <= b)
-            yCond = (y+lam >= c) & (y-lam <= d)
+            # Using bitwise operations for logical conditions
+            xCond = (x + lam >= a) & (x - lam <= b)
+            yCond = (y + lam >= c) & (y - lam <= d)
             inds = np.where(xCond & yCond)[0]
-            if len(inds)>0:
-                xInd, yInd, lamInd = x.take(inds), y.take(inds), lam.take(inds)
-                xMin, xMax = pmax(a, xInd - lamInd), pmin(b, xInd + lamInd)
-                yMin, yMax = pmax(c, yInd - lamInd), pmin(d, yInd + lamInd)
-                add = 0.5*np.sum( (xMax-xMin)*(yMax-yMin)*(xMax+xMin+yMax+yMin))/dx[i]/dy[j]
+            num_inds = inds.shape[0]
+
+            if num_inds > 0:
+                xInd = x.take(inds)
+                yInd = y.take(inds)
+                lamInd = lam.take(inds)
+                xMin = np.maximum(a, xInd - lamInd)
+                xMax = np.minimum(b, xInd + lamInd)
+                yMin = np.maximum(c, yInd - lamInd)
+                yMax = np.minimum(d, yInd + lamInd)
+                add = 0.5 * np.sum((xMax - xMin) * (yMax - yMin) * (xMax + xMin + yMax + yMin)) / dx[i] / dy[j]
                 vpb[i, j] += add
-    return vpb
+    return np.asarray(vpb)
 
 def computeVPB(PD, homDim, xSeq, ySeq, tau=0.3):
     """
