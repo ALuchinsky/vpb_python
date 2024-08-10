@@ -1,50 +1,27 @@
-Python realization for Vectorized Persistence Block vectorization
+# Python realization for Vectorized Persistence Block vectorization
+
 
 
 The goal is to implement TDAvec library in python using R as a source (see GitHub repository https://github.com/alexey-luchinsky/TDAvec)
 
+## TODO
 
-The following functions needs to be translated:
+* Create remote repository
+* Find other python libraries for vectorization
+* Incorporate my into ML workflow
+* Start the JOSS paper
+
+The following functions were translated from R and checked against R results:
 * `computeVPB`:     A Vector Summary of the Persistence Block
-
-    done
-
 * `computePL`:      A Vector Summary of the Persistence Landscape Function
-
-    done
-
-* `computePS`:      A Vector Summary of the Persistence Silhouette 
-
-    done
-
+* `computePS`:      A Vector Summary of the Persistence Silhouette
 * `computeNL`:      A Vector Summary of the Normalized Life Curve
-
-    done
-
 * `computeVAB`:     A Vector Summary of the Betti Curve
-
-    done
-
 * `computeECC`:     A Vector Summary of the Euler Characteristic Curve
-
-    done
-
 * `computePES`:     A Vector Summary of the Persistent Entropy Summary Function
-
-    done
-
 * `computePI`:      A Vector Summary of the Persistence Surface
 
-    done
 
-For each of the functions I should:
-* translate the code from R to python in the python notebook
-* create some results in R
-* Make sure that python results agree with R
-* translate the code into pyx format
-* make sure that results agree with R
-
-Finally, I should collect all files into one library
 
 ## File structure:
 * python/: python files live here
