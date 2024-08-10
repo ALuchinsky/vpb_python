@@ -1,15 +1,27 @@
 # Python realization for Vectorized Persistence Block vectorization
 
-
-
 The goal is to implement TDAvec library in python using R as a source (see GitHub repository https://github.com/alexey-luchinsky/TDAvec)
+
+## Other python libraries:
+
+* skit-tda: https://docs.scikit-tda.org/en/latest/libraries.html
+* Giotto-TDA: https://giotto-ai.github.io/gtda-docs/0.5.1/index.html
+* Geometry Understanding in Higher Dimensions: https://github.com/GUDHI, https://gudhi.inria.fr/introduction/
+* Dionysus 2: https://www.mrzv.org/software/dionysus2/
+
+
+
 
 ## TODO
 
-* Create remote repository
-* Find other python libraries for vectorization
 * Incorporate my into ML workflow
-* Start the JOSS paper
+
+Done tasks
+
+* Create remote repository: done Aug 10, 2024, 09:55
+* Start the JOSS paper template: Aug 10, 2024, 10:05
+* Find other python libraries for vectorization: Aug 10, 2024, 16:39
+
 
 The following functions were translated from R and checked against R results:
 * `computeVPB`:     A Vector Summary of the Persistence Block
@@ -25,8 +37,8 @@ The following functions were translated from R and checked against R results:
 
 ## File structure:
 * python/: python files live here
-    * TDAvec.pyx: Cython version of the package
-    * TDAvec_pyx_test.ipynb: Jupyter notebook, comparison with R results
-    * setup.py: Cython make file. See TDAvec_pyx_test.ipynb for instructions
+    * `TDAvec.pyx`: Cython version of the package
+    * `TDAvec_pyx_test.ipynb`: Jupyter notebook, comparison with R results
+    * `setup.py`: Cython make file. See TDAvec_pyx_test.ipynb for instructions
 * R/: R files live here
-    * TDA_vec.Rmd: extracting test results for different functions
+    * `TDA_vec.Rmd`: extracting test results for different functions
