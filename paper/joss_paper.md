@@ -1,15 +1,8 @@
 ---
 title: "Python Implemetation of VPB package"
 tags:
-    - python
-    - TDA
 authors:
-    - name: "Aleksei Luchinsky"
-    affiliation: 1
-    - name: "Umar Islambekov"
-    affiliation: 1
 affiliations:
-    -name Bowling Green State University, Bowling Green, OH, USA
 date: Aug 10, 2024
 ---
 
@@ -18,6 +11,21 @@ date: Aug 10, 2024
 aaa
 
 # 2) Statement of Need
+
+In the table below you can see list of some existing vectorization methods.
+
+Method | this | Giotto-TDA | GUDHI | Persim | TDA | TDAvec
+------- | ---- | --------- | ----- | ------ |  -- | ------
+BC     | V     |  V        |  V    |        |     |  V
+EEC     | V    |           |       |        |     |  V
+NLC    | V    |            |       |        |     |  V
+PES    | V    |            | V     |        |     |  V
+PS     | V    |  V         | V     |        |  V  |  V
+PL     | V    |  V         | V     |   V    |  V  |  V
+PI     | V    |  V         | V     |   V    |     |  V
+VPB    | V    |            |       |        |     |  V
+
+See last sections for references.
 
 # 3) Software Details
 
@@ -32,11 +40,13 @@ $$
 \beta_d(t) = \sum_{i=1}^N I_{[b_i, d_i)}(t),
 $$
 where $I_{[b,d)}(t)$ stands for the indicator function, which is equal to unity on the region $b\le t<d$ and vanishes outside.
+In the following we will refer to this vectorization as **BC**.
 
 2) **Euler Characteristic Curve**, which is a linear combination of the Betti Curves
 $$
-\chi(t) = \sum_{d} (-1)^2 \beta_d(t)
+\chi(t) = \sum_{d} (-1)^d \beta_d(t)
 $$
+In the following it will be referred to as **EEC**.
 
 3) **Normalized Line Curve**, where for each dimension $d$ we have
 $$
@@ -46,11 +56,13 @@ where
 $$
 L = \sum_{i=1}^N (d_i - b_i)
 $$
+In the following it will be referred to as **NLC**.
 
 4) **Persistence Entropy Summary** function
 $$
 S_d(t) = \sum_{i=1}^N \frac{d_i-b_i}{L} \log_2\left(\frac{d_i - b_i}{L}\right) I_{[b_i, d_i)}(t)
 $$
+In the following it will be referred to as **PES**.
 
 5) **Persistence Silhouette** function
 $$
@@ -64,13 +76,15 @@ d_i - t & (b_i + d_i)/2 \le t \le d_i,\\
 0 & \textrm{otherwise}
 \end{cases}
 $$
+In the following it will be referred to as **PS**.
 
-5) **Persistence Landscape** function
+
+5) **Persistence Landscape** function (PL in the following)
 $$
 \lambda_k(t) = \mathrm{arg}\max_{1\le i\le N} \Lambda_i(t)
 $$
 
-6) **Persistence Image** function
+6) **Persistence Image** function (PI in the following)
 $$
 \rho(x, y) = \sum_{i=1}^N f(b_i, p_i) \phi_{(b_i, p_i)}(x,y),
 $$
@@ -87,7 +101,7 @@ p/p_{max} & 0 \le p \le p_{max},\\
 \end{cases}
 $$
 
-7) **Vectorized Persistence Block**
+7) **Vectorized Persistence Block** (VPB in the following)
 $$
 V(x, y) = \sum_{i=1}^N I_{E(b_i, p_i)}(x, y),
 $$
@@ -97,6 +111,22 @@ E(b_i, p_i) = \left[b_i - \frac{\lambda_i}{2}; b_i + \frac{\lambda_i}{2}\right] 
 $$
 
 All defined above functions are now elements of some vector spaces and can be used in theoretical statistical analysis. In practical calculations, however, it is useful to digitize them and consider the values on some discrete 1-dimensional or 2-dimensional grids.
+
+
+
+References:
+
+Good overview of the existing libraries can be found here: https://github.com/FatemehTarashi/awesome-tda?tab=readme-ov-file#python
+
+Below are some extractions:
+* Python:
+    * Giotto-TDA: https://giotto-ai.github.io/gtda-docs/0.5.1/index.html
+    * GUDHI: https://gudhi.inria.fr/
+    * Persim: https://persim.scikit-tda.org/en/latest/
+* R
+    * TDA: https://cran.r-project.org/web/packages/TDA/
+    * TDAstats: https://github.com/rrrlw/TDAstats
+    * TDAvec: https://cran.r-project.org/web/packages/TDAvec/index.html
 
 # 4) Program Workflow
 
