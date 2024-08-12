@@ -32,6 +32,14 @@ def pmin(num, vec):
     return np.array([min(num, vec[i_]) for i_ in range(vec.size)])
 
 
+def createEllipse(n = 100, a = 1, b = 1, eps = 0.1):
+    phi = np.random.uniform(0,2*np.pi,n)
+    r = np.random.uniform(1-eps,1+eps,n)
+    x = a * r * np.cos(phi)
+    y = b * r * np.sin(phi)
+    return np.vstack([x,y]).T
+
+
 class TDAvectorizer:
 
     def __init__(self, params = {"output": "vpb", "threshold": 2, "inf": 2, "maxDim": 1,
@@ -48,12 +56,6 @@ class TDAvectorizer:
             self.params[k] = params[k]
         return
     
-    def createEllipse(self, n = 100, a = 1, b = 1, eps = 0.1):
-        phi = np.random.uniform(0,2*np.pi,n)
-        r = np.random.uniform(1-eps,1+eps,n)
-        x = a * r * np.cos(phi)
-        y = b * r * np.sin(phi)
-        return np.vstack([x,y]).T
     
     def __getitem__(self, index):
         self.diags = self.diags[index]
