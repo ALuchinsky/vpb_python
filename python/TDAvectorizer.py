@@ -1,6 +1,10 @@
 import numpy as np
 import ripser
 
+from TDAvec import pmin, pmax, DiagToPD, \
+    computeVPB, computePL, computePS, computeNL, computeVAB, computeECC, computePES, computePI,\
+    computeVPB_dim0, computeVPB_dim1
+
 def pmax(num, vec):
     """
     Compute the element-wise maximum of a scalar value and a NumPy array.
@@ -31,7 +35,7 @@ def pmin(num, vec):
 class TDAvectorizer:
 
     def __init__(self, params = {"output": "vpb", "threshold": 2, "inf": 2, "maxDim": 1,
-                                 "scale": None, "nGrid": 11, "quantiles": False}):
+                                 "scale": None, "nGrid": 11, "quantiles": False, "tau": 0.3, "k":1, "sigma": 1}):
         self.diags = []
         self.params = params
         return 
@@ -76,35 +80,41 @@ class TDAvectorizer:
                 "minB": births.min(), "maxB": deaths.max(), "minD": deaths.min(), "maxD": births.min()
             }
 
-    def computeVAB(self, D, homDim, scaleSeq):
-        """
-        Compute the Vector Summary of the Betti Curve    (VAB) vectorization for a given homological dimension, scale sequence, and power.
-
-        Parameters:
-            D (numpy.ndarray): Persistence diagram (array of birth-death arrays for each dimension).
-            homDim (int): The homological dimension along which the VAB is computed.
-            scaleSeq (numpy.ndarray): The sequence of scale values.
-
-        Returns:
-            numpy.ndarray: The VAB vector.
-        """
-        x, y = D[homDim][:,0], D[homDim][:,1]
-        vab = []
-        for k in range( len(scaleSeq)-1):
-            b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
-            vab.append( sum(pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
-        return np.array(vab)
     
-    def transform(self, homDim = 1, scaleSeq = None, output = None):
+    def transform(self, homDim = 1, xSeq = None, ySeq = None, output = None, tau = None, k = None, sigma = None):
         if output is None:
             output = self.params["output"].lower()
         else:
             output = output.lower()
-        if scaleSeq is None:
-            scaleSeq = self.params["scale"]
+        if xSeq is None:
+            xSeq = self.params["scale"]
+        if ySeq is None:
+            ySeq = xSeq
+        if tau is None:
+            tau = self.params["tau"]
+        if k is None:
+            k = self.params["k"]
+        if sigma is None:
+            sigma = self.params["sigma"]
+
+#    computePES, computePI,\
+
         if output == "vab":
-            print("VAB")
-            return np.array([self.computeVAB(d, homDim = homDim, scaleSeq = scaleSeq) for d in self.diags])
+            return np.array([computeVAB(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
+        elif output == "vpb":
+            return np.array([computeVPB(d, homDim = homDim, xSeq = xSeq, ySeq = ySeq, tau = tau) for d in self.diags])
+        elif output == "pl":
+            return np.array([computePL(d, homDim = homDim, scaleSeq = xSeq, k = k) for d in self.diags])
+        elif output == "ps":
+            return np.array([computePS(d, homDim = homDim, scaleSeq = xSeq, p=k) for d in self.diags])
+        elif output == "nl":
+            return np.array([computeNL(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
+        elif output == "ecc":
+            return np.array([computeECC(d, homDim, xSeq) for d in self.diags])
+        elif output == "pes":
+            return np.array([computePES(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
+        elif output == "pi":
+            return np.array([computePI(d, homDim = homDim, xSeq = xSeq, ySeq = ySeq, sigma = sigma) for d in self.diags])
     
 
 
