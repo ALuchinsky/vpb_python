@@ -1,9 +1,22 @@
 ---
-title: "Python Implemetation of VPB package"
-tags:
+title: >-
+    TDAvectorize: Python library for vectorization of TDA methods
 authors:
+  - name: Aleksei Luchinsky
+    email: aluchi@bgsu.edu
+    affiliation: [1]
+    corresponding: true
+  - name: Umar Islambebkov
+    affiliation: [1]
+    equal-contrib: true
 affiliations:
-date: Aug 10, 2024
+  - index: 1
+    name: Bowling Green State University
+date: 2022-06-29
+bibliography: paper.bib
+tags:
+  - TDA
+  - Data Analysis
 ---
 
 # 1) Summary
@@ -16,11 +29,11 @@ In the table below you can see list of some existing vectorization methods.
 
 Method | this | Giotto-TDA | GUDHI | Persim | TDA | TDAvec
 ------- | ---- | --------- | ----- | ------ |  -- | ------
-BC     | V     |  V        |  V    |        |     |  V
+BC      | V     |  V        |  V    |        |     |  V
 EEC     | V    |           |       |        |     |  V
-NLC    | V    |            |       |        |     |  V
-PES    | V    |            | V     |        |     |  V
-PS     | V    |  V         | V     |        |  V  |  V
+NLC     | V    |            |       |        |     |  V
+PES     | V    |            | V     |        |     |  V
+PS      | V    |  V         | V     |        |  V  |  V
 PL     | V    |  V         | V     |   V    |  V  |  V
 PI     | V    |  V         | V     |   V    |     |  V
 VPB    | V    |            |       |        |     |  V
