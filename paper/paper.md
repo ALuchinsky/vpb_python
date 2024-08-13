@@ -118,15 +118,23 @@ It should be mentioned also that TDAvectorizer class is not the only way to perf
 
     > TDAvectorizer.computeECC(pd, 0, np.linspace(0,2,20))
 
-In the table below you can see the format of all other vectorization functions
+The format of such functions is:
 
+* computePL(PD, homDim, xSeq, k=1)
+* computePS(PD, homDim, xSeq, p=1)
+* computeNL(PD, homDim, xSeq)
+* computeVAB(D, homDim, xSeq)
+* computeECC(D, homDim, xSeq)
+* computePES(D, homDim, xSeq)
+* computePI(PD, homDim, xSeq, ySeq, sigma)
+* computeVPB(PD, homDim, xSeq, ySeq, tau=0.3)
+
+where *PD* is the persistence diagram we are analyzing, homDim is the homology dimension, xSeq and ySeq are grid vectors in $x$ and $(x,y)$ space, while other parameters are specific for each vectorization function.
 
 
 # 5) Conclusion
 
 # 6) Acknowledgements
-
-
 
 # 7) References
 
