@@ -12,3 +12,7 @@ __pycache__/
 .vscode/
 R/computeVPB.R
 
+paper/jats/
+paper/paper.pdf
+paper/template/
+
