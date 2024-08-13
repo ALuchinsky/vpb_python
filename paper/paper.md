@@ -40,17 +40,18 @@ Described above vectorization methods were implemented in a series of libraries,
 
 As you can see from the table below, however, we do not have a python package, that implements all of them. The goal of the proposed library is to fill this gap.
 
+\newcommand{\cm}{$\checkmark$}
 
 Method | this | Giotto-TDA | GUDHI | Persim | TDA | TDAvec
 ------- | ---- | --------- | ----- | ------ |  -- | ------
-BC      | V     |  V        |  V    |        |     |  V
-ECC     | V    |           |       |        |     |  V
-NLC     | V    |            |       |        |     |  V
-PES     | V    |            | V     |        |     |  V
-PS      | V    |  V         | V     |        |  V  |  V
-PL     | V    |  V         | V     |   V    |  V  |  V
-PI     | V    |  V         | V     |   V    |     |  V
-VPB    | V    |            |       |        |     |  V
+BC      | \cm     |  \cm        |  \cm    |        |     |  \cm
+ECC     | \cm    |           |       |        |     |  \cm
+NLC     | \cm    |            |       |        |     |  \cm
+PES     | \cm    |            | \cm     |        |     |  \cm
+PS      | \cm    |  \cm         | \cm     |        |  \cm  |  \cm
+PL     | \cm    |  \cm         | \cm     |   \cm    |  \cm  |  \cm
+PI     | \cm    |  \cm         | \cm     |   \cm    |     |  \cm
+VPB    | \cm    |            |       |        |     |  \cm
 
 
 # 3) Software Details
