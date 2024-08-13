@@ -6,7 +6,7 @@ authors:
     email: aluchi@bgsu.edu
     affiliation: [1]
     corresponding: true
-  - name: Umar Islambebkov
+  - name: Umar Islambekov
     affiliation: [1]
     equal-contrib: true
 affiliations:
@@ -25,6 +25,17 @@ aaa
 
 # 2) Statement of Need
 
+Good up-to-date review of the current status of the TDA vectorization methods and libraries can be found in the page [@awesome-tda:2024]. In particular, we can list
+
+* Euler Characteristic Curve [@Richardson:2014],
+* Normalized Life Curve:[@Chung:2022]
+* Persistent Entropy Summary: [@Atienza:2020],
+* Persistence Surface: [@Adams:2017],
+* Persistence Landscape: [@Bubenik:2015], [@Chazal:2014]
+* Persistence Silhouette [@Chazal:2014]
+* Betti Curves: [@Chazal:2021], [@Chung:2022]
+* Persistence Block: [@Chan:2022]
+
 Described above vectorization methods were implemented in a series of libraries, both Python (see, for example, [@Giotto:2024], [@GUDHI:2024], [@Persin:2024]) and R (see, for example, [@TDA:2024], [@TDAstats:2024], [@TDAvec:2022]).
 
 As you can see from the table below, however, we do not have a python package, that implements all of them. The goal of the proposed library is to fill this gap.
@@ -33,7 +44,7 @@ As you can see from the table below, however, we do not have a python package, t
 Method | this | Giotto-TDA | GUDHI | Persim | TDA | TDAvec
 ------- | ---- | --------- | ----- | ------ |  -- | ------
 BC      | V     |  V        |  V    |        |     |  V
-EEC     | V    |           |       |        |     |  V
+ECC     | V    |           |       |        |     |  V
 NLC     | V    |            |       |        |     |  V
 PES     | V    |            | V     |        |     |  V
 PS      | V    |  V         | V     |        |  V  |  V
@@ -41,27 +52,12 @@ PL     | V    |  V         | V     |   V    |  V  |  V
 PI     | V    |  V         | V     |   V    |     |  V
 VPB    | V    |            |       |        |     |  V
 
-See last sections for references.
 
 # 3) Software Details
 
 
-All defined above functions are now elements of some vector spaces and can be used in theoretical statistical analysis. In practical calculations, however, it is useful to digitize them and consider the values on some discrete 1-dimensional or 2-dimensional grids.
 
 
-References:
-
-Good overview of the existing libraries can be found here: https://github.com/FatemehTarashi/awesome-tda?tab=readme-ov-file#python
-
-Below are some extractions:
-* Python:
-    * Giotto-TDA: https://giotto-ai.github.io/gtda-docs/0.5.1/index.html
-    * GUDHI: https://gudhi.inria.fr/
-    * Persim: https://persim.scikit-tda.org/en/latest/
-* R
-    * TDA: https://cran.r-project.org/web/packages/TDA/
-    * TDAstats: https://github.com/rrrlw/TDAstats
-    * TDAvec: https://cran.r-project.org/web/packages/TDAvec/index.html
 
 # 4) Program Workflow
 
@@ -85,6 +81,9 @@ In the figure below you can see correlation plots
 # 6) Acknowledgements
 
 # Backup
+
+All defined above functions are now elements of some vector spaces and can be used in theoretical statistical analysis. In practical calculations, however, it is useful to digitize them and consider the values on some discrete 1-dimensional or 2-dimensional grids.
+
 
 As it was noticed in the previous section, lots of different vectorization methods of the can be found in the literature. For a given persistence diagram
 $$
