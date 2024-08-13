@@ -98,7 +98,7 @@ You can see from this example, that when calling the `transform` method you can 
 
 Described approach makes it convenient to perform a systematic analysis and compare performance of different vector representations. In the figure below you can see some correlations between vectors and their correlation coefficients:
 
-![Correlations Plots](./cor_plt.pdf)
+![Correlations Plots](./figs/cor_plt.png)
 
 To get more detailed information you should perform such simulation several times, so that you can see the general pattern, determine mean values and spread of each methods' score. You can see in the table below the results of the analysis:
 
