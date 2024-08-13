@@ -1,9 +1,22 @@
 ---
-title: "Python Implemetation of VPB package"
-tags:
+title: >-
+    TDAvectorize: Python library for vectorization of TDA methods
 authors:
+  - name: Aleksei Luchinsky
+    email: aluchi@bgsu.edu
+    affiliation: [1]
+    corresponding: true
+  - name: Umar Islambebkov
+    affiliation: [1]
+    equal-contrib: true
 affiliations:
-date: Aug 10, 2024
+  - index: 1
+    name: Bowling Green State University
+date: 2022-06-29
+bibliography: paper.bib
+tags:
+  - TDA
+  - Data Analysis
 ---
 
 # 1) Summary
@@ -12,15 +25,18 @@ aaa
 
 # 2) Statement of Need
 
-In the table below you can see list of some existing vectorization methods.
+Described above vectorization methods were implemented in a series of libraries, both Python (see, for example, [@Giotto:2024], [@GUDHI:2024], [@Persin:2024]) and R (see, for example, [@TDA:2024], [@TDAstats:2024], [@TDAvec:2022]).
+
+As you can see from the table below, however, we do not have a python package, that implements all of them. The goal of the proposed library is to fill this gap.
+
 
 Method | this | Giotto-TDA | GUDHI | Persim | TDA | TDAvec
 ------- | ---- | --------- | ----- | ------ |  -- | ------
-BC     | V     |  V        |  V    |        |     |  V
+BC      | V     |  V        |  V    |        |     |  V
 EEC     | V    |           |       |        |     |  V
-NLC    | V    |            |       |        |     |  V
-PES    | V    |            | V     |        |     |  V
-PS     | V    |  V         | V     |        |  V  |  V
+NLC     | V    |            |       |        |     |  V
+PES     | V    |            | V     |        |     |  V
+PS      | V    |  V         | V     |        |  V  |  V
 PL     | V    |  V         | V     |   V    |  V  |  V
 PI     | V    |  V         | V     |   V    |     |  V
 VPB    | V    |            |       |        |     |  V
@@ -28,6 +44,47 @@ VPB    | V    |            |       |        |     |  V
 See last sections for references.
 
 # 3) Software Details
+
+
+All defined above functions are now elements of some vector spaces and can be used in theoretical statistical analysis. In practical calculations, however, it is useful to digitize them and consider the values on some discrete 1-dimensional or 2-dimensional grids.
+
+
+References:
+
+Good overview of the existing libraries can be found here: https://github.com/FatemehTarashi/awesome-tda?tab=readme-ov-file#python
+
+Below are some extractions:
+* Python:
+    * Giotto-TDA: https://giotto-ai.github.io/gtda-docs/0.5.1/index.html
+    * GUDHI: https://gudhi.inria.fr/
+    * Persim: https://persim.scikit-tda.org/en/latest/
+* R
+    * TDA: https://cran.r-project.org/web/packages/TDA/
+    * TDAstats: https://github.com/rrrlw/TDAstats
+    * TDAvec: https://cran.r-project.org/web/packages/TDAvec/index.html
+
+# 4) Program Workflow
+
+In the figure below you can see correlation plots
+
+![Correlations Plots](./cor_plt.pdf)
+
+
+| method   | 0                 | 1                 |
+|:---------|:------------------|:------------------|
+| ECC      | $0.97 \pm 0.004$  | $0.99 \pm 0.012$  |
+| NL       | $0.964 \pm 0.011$ | $0.986 \pm 0.004$ |
+| PES      | $0.972 \pm 0.004$ | ---               |
+| PI       | $0.969 \pm 0.007$ | $0.96 \pm 0.028$  |
+| PL       | ---              | $0.985 \pm 0.002$ |
+| PS       | $0.964 \pm 0.009$ | $0.982 \pm 0.007$ |
+| VAB      | $0.971 \pm 0.004$ | $0.984 \pm 0.015$ |
+
+# 5) Conclusion
+
+# 6) Acknowledgements
+
+# Backup
 
 As it was noticed in the previous section, lots of different vectorization methods of the can be found in the literature. For a given persistence diagram
 $$
@@ -110,29 +167,6 @@ $$
 E(b_i, p_i) = \left[b_i - \frac{\lambda_i}{2}; b_i + \frac{\lambda_i}{2}\right] \times  \left[p_i - \frac{\lambda_i}{2}; p_i + \frac{\lambda_i}{2}\right]
 $$
 
-All defined above functions are now elements of some vector spaces and can be used in theoretical statistical analysis. In practical calculations, however, it is useful to digitize them and consider the values on some discrete 1-dimensional or 2-dimensional grids.
-
-
-
-References:
-
-Good overview of the existing libraries can be found here: https://github.com/FatemehTarashi/awesome-tda?tab=readme-ov-file#python
-
-Below are some extractions:
-* Python:
-    * Giotto-TDA: https://giotto-ai.github.io/gtda-docs/0.5.1/index.html
-    * GUDHI: https://gudhi.inria.fr/
-    * Persim: https://persim.scikit-tda.org/en/latest/
-* R
-    * TDA: https://cran.r-project.org/web/packages/TDA/
-    * TDAstats: https://github.com/rrrlw/TDAstats
-    * TDAvec: https://cran.r-project.org/web/packages/TDAvec/index.html
-
-# 4) Program Workflow
-
-# 5) Conclusion
-
-# 6) Acknowledgements
 
 # 7) References
 
