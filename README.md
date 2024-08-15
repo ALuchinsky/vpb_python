@@ -9,9 +9,6 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 * Geometry Understanding in Higher Dimensions: https://github.com/GUDHI, https://gudhi.inria.fr/introduction/
 * Dionysus 2: https://www.mrzv.org/software/dionysus2/
 
-
-
-
 ## TODO
 
 * Send to Umar
