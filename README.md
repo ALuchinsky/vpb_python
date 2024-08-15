@@ -14,13 +14,19 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 
 ## TODO
 
-* Incorporate my into ML workflow
+* Send to Umar
 
 Done tasks
 
 * Create remote repository: done Aug 10, 2024, 09:55
 * Start the JOSS paper template: Aug 10, 2024, 10:05
 * Find other python libraries for vectorization: Aug 10, 2024, 16:39
+* Incorporate my into ML workflow
+* Redo simulations: done Aug 15, 2024, 07:38
+* Correct table: done Aug 15, 2024, 07:38
+* Add dim0+dim1 set of predictors: done Aug 15, 2024, 08:50
+* Rewrite paper: done Aug 15, 2024, 11:54
+* Remove outliers: done Aug 15, 2024, 13:00
 
 
 The following functions were translated from R and checked against R results:

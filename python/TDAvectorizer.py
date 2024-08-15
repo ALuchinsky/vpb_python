@@ -42,7 +42,7 @@ def createEllipse(n = 100, a = 1, b = 1, eps = 0.1):
 
 class TDAvectorizer:
 
-    def __init__(self, params = {"output": "vpb", "threshold": 2, "inf": 2, "maxDim": 1,
+    def __init__(self, params = {"output": "vpb", "threshold": 2, "inf": None, "maxDim": 1,
                                  "scale": None, "nGrid": 11, "quantiles": False, "tau": 0.3, "k":1, "sigma": 1}):
         self.diags = []
         self.params = params
@@ -79,7 +79,7 @@ class TDAvectorizer:
             births = np.concatenate([d[homDim][:,0] for d in self.diags])
             deaths = np.concatenate([d[homDim][:,1] for d in self.diags])
             return {
-                "minB": births.min(), "maxB": deaths.max(), "minD": deaths.min(), "maxD": births.min()
+                "minB": births.min(), "maxB": births.max(), "minD": deaths.min(), "maxD": deaths.max()
             }
 
     
@@ -100,24 +100,41 @@ class TDAvectorizer:
             sigma = self.params["sigma"]
 
 #    computePES, computePI,\
-
-        if output == "vab":
-            return np.array([computeVAB(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
-        elif output == "vpb":
-            return np.array([computeVPB(d, homDim = homDim, xSeq = xSeq, ySeq = ySeq, tau = tau) for d in self.diags])
-        elif output == "pl":
-            return np.array([computePL(d, homDim = homDim, scaleSeq = xSeq, k = k) for d in self.diags])
-        elif output == "ps":
-            return np.array([computePS(d, homDim = homDim, scaleSeq = xSeq, p=k) for d in self.diags])
-        elif output == "nl":
-            return np.array([computeNL(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
-        elif output == "ecc":
-            return np.array([computeECC(d, homDim, xSeq) for d in self.diags])
-        elif output == "pes":
-            return np.array([computePES(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
-        elif output == "pi":
-            return np.array([computePI(d, homDim = homDim, xSeq = xSeq, ySeq = ySeq, sigma = sigma) for d in self.diags])
+        if type(homDim) == int:
+            if output == "vab":
+                return np.array([computeVAB(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
+            elif output == "vpb":
+                out = np.array([computeVPB(d, homDim = homDim, xSeq = xSeq, ySeq = ySeq, tau = tau) for d in self.diags])
+                if homDim == 1:
+                    out = out.reshape( (out.shape[0], out.shape[1]*out.shape[2]))
+                return out
+            elif output == "pl":
+                return np.array([computePL(d, homDim = homDim, scaleSeq = xSeq, k = k) for d in self.diags])
+            elif output == "ps":
+                return np.array([computePS(d, homDim = homDim, scaleSeq = xSeq, p=k) for d in self.diags])
+            elif output == "nl":
+                return np.array([computeNL(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
+            elif output == "ecc":
+                return np.array([computeECC(d, homDim, xSeq) for d in self.diags])
+            elif output == "pes":
+                return np.array([computePES(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
+            elif output == "pi":
+                return np.array([computePI(d, homDim = homDim, xSeq = xSeq, ySeq = ySeq, sigma = sigma) for d in self.diags])
+        elif type(homDim) == list:
+            out = np.zeros( (len(self.diags), 0) )
+            for d in homDim:
+                out  = np.hstack([out, 
+                                  self.transform(homDim = d, xSeq = xSeq, ySeq = ySeq, output = output, tau = tau, k = k, sigma = sigma)])
+            return out
     
+
+# clouds = []
+# ratList = np.random.uniform(-0.5, 0.5, 10**3)
+# for ratio in ratList:
+#     clouds = clouds + [createEllipse(a=1-ratio, b=1, eps=0.1)]
+
+# vect = TDAvectorizer()
+# vect.fit(clouds)
 
 
     
