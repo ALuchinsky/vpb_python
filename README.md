@@ -24,7 +24,6 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 
 ## TODO
 
-* Send to Umar
 
 Done tasks
 
@@ -37,6 +36,7 @@ Done tasks
 * Add dim0+dim1 set of predictors: done Aug 15, 2024, 08:50
 * Rewrite paper: done Aug 15, 2024, 11:54
 * Remove outliers: done Aug 15, 2024, 13:00
+* Send to Umar: done Aug 15, 2024, 16:53
 
 ## MISC
 
