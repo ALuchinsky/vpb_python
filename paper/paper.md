@@ -64,7 +64,7 @@ In the current section we will demonstrate the work of the proposed library on a
 
 You can see some typical results in the figure below:
 
-![Sample Point Clouds](./figs/clouds.png)
+![Sample Point Clouds](./figs/clouds.pdf)
 
 The most simples way to generate persistence diagrams from these point clouds is to use supplied with use main package class **TDAvectorizer**:
 
@@ -73,7 +73,7 @@ The most simples way to generate persistence diagrams from these point clouds is
 
 In the figure below you can see some example of persistence diagrams:
 
-![Sample Persistence Diagrams](./figs/diags.png)
+![Sample Persistence Diagrams](./figs/diags.pdf)
 
 Once the TDAvectorizer is fitted, you can transform these persistence diagrams into vector representation using the `transform` method. The resulting vectors are then used as predictors:
 
@@ -90,9 +90,9 @@ You can see from this example, that when calling the `transform` method you can 
 
 Described approach makes it convenient to perform a systematic analysis and compare performance of different vector representations. In the figure below you can see some correlations between vectors and their correlation coefficients:
 
-![Correlations Plots](./figs/cor_plt_dim0.png){width = 20%}
-![Correlations Plots](./figs/cor_plt_dim1.png){width = 20%}
-![Correlations Plots](./figs/cor_plt_dim01.png){width = 20%}
+![Correlations Plots](./figs/cor_plt_dim0.pdf){ width=33% }
+![Correlations Plots](./figs/cor_plt_dim1.pdf){ width=33% }
+![Correlations Plots](./figs/cor_plt_dim01.pdf){ width=33% }
 
 To get more detailed information you should perform such simulation several times, so that you can see the general pattern, determine mean values and spread of each methods' score. You can see in the table below the results of the analysis:
 
