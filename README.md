@@ -2,12 +2,25 @@
 
 The goal is to implement TDAvec library in python using R as a source (see GitHub repository https://github.com/alexey-luchinsky/TDAvec)
 
-## Other python libraries:
+## How to run:
 
-* skit-tda: https://docs.scikit-tda.org/en/latest/libraries.html
-* Giotto-TDA: https://giotto-ai.github.io/gtda-docs/0.5.1/index.html
-* Geometry Understanding in Higher Dimensions: https://github.com/GUDHI, https://gudhi.inria.fr/introduction/
-* Dionysus 2: https://www.mrzv.org/software/dionysus2/
+1. create python enviroment and install all packages from requirements.txt
+2. run `python setup.py build_ext --inplace` from the `python/` directory to compile pyx file
+3. launch `R/TDA_vec.Rmd` to get R results
+4. run through `test_TDAvectorizer.ipynb` notebook to see python results and save figures
+5. launch docker
+6. Run `source make_pdf.sh` from `paper` directory to create pdf
+
+## File structure:
+* python/: python files live here
+    * `TDAvec.pyx`: Cython version of the package. 
+    * `TDAvectorizer.py`: TDAvectorizer class
+    * `test_TDAvectorizer.ipynb`: Jupyter notebook, testing TDAvectorizer
+    * `setup.py`: Cython make file. See TDAvec_pyx_test.ipynb for instructions
+    * `TDAvec_pyx_test.ipynb`: Jupyter notebook, comparison with R results
+* R/: R files live here
+    * `TDA_vec.Rmd`: extracting test results for different functions
+* paper/: paper files live here
 
 ## TODO
 
@@ -25,6 +38,16 @@ Done tasks
 * Rewrite paper: done Aug 15, 2024, 11:54
 * Remove outliers: done Aug 15, 2024, 13:00
 
+## MISC
+
+### Other python libraries:
+
+* skit-tda: https://docs.scikit-tda.org/en/latest/libraries.html
+* Giotto-TDA: https://giotto-ai.github.io/gtda-docs/0.5.1/index.html
+* Geometry Understanding in Higher Dimensions: https://github.com/GUDHI, https://gudhi.inria.fr/introduction/
+* Dionysus 2: https://www.mrzv.org/software/dionysus2/
+
+
 
 The following functions were translated from R and checked against R results:
 * `computeVPB`:     A Vector Summary of the Persistence Block
@@ -38,10 +61,3 @@ The following functions were translated from R and checked against R results:
 
 
 
-## File structure:
-* python/: python files live here
-    * `TDAvec.pyx`: Cython version of the package
-    * `TDAvec_pyx_test.ipynb`: Jupyter notebook, comparison with R results
-    * `setup.py`: Cython make file. See TDAvec_pyx_test.ipynb for instructions
-* R/: R files live here
-    * `TDA_vec.Rmd`: extracting test results for different functions
