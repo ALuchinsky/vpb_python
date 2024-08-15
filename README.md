@@ -1,55 +1,47 @@
-Python realization for Vectorized Persistence Block vectorization
-
+# Python realization for Vectorized Persistence Block vectorization
 
 The goal is to implement TDAvec library in python using R as a source (see GitHub repository https://github.com/alexey-luchinsky/TDAvec)
 
+## Other python libraries:
 
-The following functions needs to be translated:
+* skit-tda: https://docs.scikit-tda.org/en/latest/libraries.html
+* Giotto-TDA: https://giotto-ai.github.io/gtda-docs/0.5.1/index.html
+* Geometry Understanding in Higher Dimensions: https://github.com/GUDHI, https://gudhi.inria.fr/introduction/
+* Dionysus 2: https://www.mrzv.org/software/dionysus2/
+
+## TODO
+
+* Send to Umar
+
+Done tasks
+
+* Create remote repository: done Aug 10, 2024, 09:55
+* Start the JOSS paper template: Aug 10, 2024, 10:05
+* Find other python libraries for vectorization: Aug 10, 2024, 16:39
+* Incorporate my into ML workflow
+* Redo simulations: done Aug 15, 2024, 07:38
+* Correct table: done Aug 15, 2024, 07:38
+* Add dim0+dim1 set of predictors: done Aug 15, 2024, 08:50
+* Rewrite paper: done Aug 15, 2024, 11:54
+* Remove outliers: done Aug 15, 2024, 13:00
+
+
+The following functions were translated from R and checked against R results:
 * `computeVPB`:     A Vector Summary of the Persistence Block
-
-    done
-
 * `computePL`:      A Vector Summary of the Persistence Landscape Function
-
-    done
-
-* `computePS`:      A Vector Summary of the Persistence Silhouette 
-
-    done
-
+* `computePS`:      A Vector Summary of the Persistence Silhouette
 * `computeNL`:      A Vector Summary of the Normalized Life Curve
-
-    done
-
 * `computeVAB`:     A Vector Summary of the Betti Curve
-
-    done
-
 * `computeECC`:     A Vector Summary of the Euler Characteristic Curve
-
-    done
-
 * `computePES`:     A Vector Summary of the Persistent Entropy Summary Function
-
-    done
-
 * `computePI`:      A Vector Summary of the Persistence Surface
 
-    done
 
-For each of the functions I should:
-* translate the code from R to python in the python notebook
-* create some results in R
-* Make sure that python results agree with R
-* translate the code into pyx format
-* make sure that results agree with R
-
-Finally, I should collect all files into one library
 
 ## File structure:
 * python/: python files live here
-    * TDAvec.pyx: Cython version of the package
-    * TDAvec_pyx_test.ipynb: Jupyter notebook, comparison with R results
-    * setup.py: Cython make file. See TDAvec_pyx_test.ipynb for instructions
+    * `TDAvec.pyx`: Cython version of the package
+    * `TDAvec_pyx_test.ipynb`: Jupyter notebook, comparison with R results
+    * `setup.py`: Cython make file. See TDAvec_pyx_test.ipynb for instructions
 * R/: R files live here
-    * TDA_vec.Rmd: extracting test results for different functions
+    * `TDA_vec.Rmd`: extracting test results for different functions
