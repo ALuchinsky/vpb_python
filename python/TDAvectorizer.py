@@ -42,7 +42,7 @@ def createEllipse(n = 100, a = 1, b = 1, eps = 0.1):
 
 class TDAvectorizer:
 
-    def __init__(self, params = {"output": "vpb", "threshold": 2, "inf": 2, "maxDim": 1,
+    def __init__(self, params = {"output": "vpb", "threshold": 2, "inf": None, "maxDim": 1,
                                  "scale": None, "nGrid": 11, "quantiles": False, "tau": 0.3, "k":1, "sigma": 1}):
         self.diags = []
         self.params = params
@@ -118,6 +118,14 @@ class TDAvectorizer:
         elif output == "pi":
             return np.array([computePI(d, homDim = homDim, xSeq = xSeq, ySeq = ySeq, sigma = sigma) for d in self.diags])
     
+
+clouds = []
+ratList = np.random.uniform(-0.5, 0.5, 10**2)
+for ratio in ratList:
+    clouds = clouds + [createEllipse(a=1-ratio, b=1, eps=0.1)]
+
+vect = TDAvectorizer()
+vect.fit(clouds)
 
 
     
