@@ -98,14 +98,14 @@ To get more detailed information you should perform such simulation several time
 
 | method   | 0                 | 1                 | [0, 1]            |
 |:---------|:------------------|:------------------|:------------------|
-| ECC      | $0.97 \pm 0.006$  | $0.992 \pm 0.001$ | $0.901 \pm 0.287$ |
-| NL       | $0.955 \pm 0.004$ | $0.964 \pm 0.066$ | $0.989 \pm 0.002$ |
-| PES      | $0.969 \pm 0.004$ | $0.771 \pm 0.022$ | $0.975 \pm 0.002$ |
-| PI       | $0.971 \pm 0.003$ | $0.476 \pm 0.441$ | $0.691 \pm 0.336$ |
-| PL       | $0.478 \pm 0.058$ | $0.986 \pm 0.002$ | $0.977 \pm 0.028$ |
-| PS       | $0.941 \pm 0.004$ | $0.984 \pm 0.002$ | $0.987 \pm 0.002$ |
-| VAB      | $0.97 \pm 0.008$  | $0.979 \pm 0.028$ | $0.992 \pm 0.001$ |
-| VPB      | $0.88 \pm 0.29$   | $0.012 \pm 0.007$ | $0.011 \pm 0.007$ |
+| ECC      | $0.97 \pm 0.004$  | $0.992 \pm 0.001$ | $0.968 \pm 0.107$ |
+| NL       | $0.955 \pm 0.006$ | $0.985 \pm 0.003$ | $0.985 \pm 0.014$ |
+| PES      | $0.966 \pm 0.004$ | $0.768 \pm 0.016$ | $0.974 \pm 0.004$ |
+| PI       | $0.97 \pm 0.004$  | $0.714 \pm 0.223$ | $0.934 \pm 0.085$ |
+| PL       | $0.491 \pm 0.053$ | $0.985 \pm 0.002$ | $0.985 \pm 0.002$ |
+| PS       | $0.943 \pm 0.006$ | $0.964 \pm 0.094$ | $0.977 \pm 0.036$ |
+| VAB      | $0.969 \pm 0.004$ | $0.964 \pm 0.067$ | $0.991 \pm 0.003$ |
+| VPB      | $0.969 \pm 0.004$ | $0.851 \pm 0.246$ | $0.755 \pm 0.283$ |
 
 From this table it is clear that almost all results are comparable with each other, but ECC method with homDim = 1 is the best solution for the current data set. Surprisingly, for some of the feature extraction methods (PES with homDim = 1 and PL with homDim = 0) the results were very bad and the simulation score turned out to be negative.
 
