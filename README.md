@@ -4,7 +4,7 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 
 ## How to run:
 
-1. create python enviroment and install all packages from requirements.txt
+1. create python environment and install all packages from requirements.txt
 2. run `python setup.py build_ext --inplace` from the `python/` directory to compile pyx file
 3. launch `R/TDA_vec.Rmd` to get R results
 4. run through `test_TDAvectorizer.ipynb` notebook to see python results and save figures
@@ -13,7 +13,7 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 
 ## File structure:
 * python/: python files live here
-    * `TDAvec.pyx`: Cython version of the package. 
+    * `TDAvec.pyx`: Cython version of the package. Note that you need to recompile it after each change
     * `TDAvectorizer.py`: TDAvectorizer class
     * `test_TDAvectorizer.ipynb`: Jupyter notebook, testing TDAvectorizer
     * `setup.py`: Cython make file. See TDAvec_pyx_test.ipynb for instructions
@@ -24,9 +24,10 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 
 ## TODO
 
-* FDA in R
-* Quick FDA in Python
+* FDA in Python
 * FDA: compare to R
+* Quick FDA in Python
+* Quick FDA: compare to R
 * add FDA
 * reread/rewrite paper
 

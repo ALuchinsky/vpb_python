@@ -388,3 +388,15 @@ def computePI(PD, homDim, xSeq, ySeq, sigma):
     out = np.sum(Psurf_mat, axis = 1)
     return out
 
+def computeFDA(PD, maxD, homDim = 0, K = 10):
+    X = np.zeros( (2*K+1))
+    pd = PD[homDim]
+    b = pd[:,0]/maxD; d = pd[:,1]/maxD
+    X[0] = np.sum(d - b)
+    for m in range(1, K+1):
+        c = 2*m*np.pi
+        alpha_sin = np.sin(c*d)-np.sin(c*b)
+        alpha_cos = np.cos(c*d)-np.cos(c*b)
+        X[2*m-1] = -np.sqrt(2)/c * np.sum(alpha_cos)
+        X[2*m] = np.sqrt(2)/c * np.sum(alpha_sin)
+    return X

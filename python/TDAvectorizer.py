@@ -3,7 +3,7 @@ import ripser
 
 from TDAvec import pmin, pmax, DiagToPD, \
     computeVPB, computePL, computePS, computeNL, computeVAB, computeECC, computePES, computePI,\
-    computeVPB_dim0, computeVPB_dim1
+    computeVPB_dim0, computeVPB_dim1, computeFDA
 
 def pmax(num, vec):
     """
@@ -128,13 +128,13 @@ class TDAvectorizer:
             return out
     
 
-# clouds = []
-# ratList = np.random.uniform(-0.5, 0.5, 10**3)
-# for ratio in ratList:
-#     clouds = clouds + [createEllipse(a=1-ratio, b=1, eps=0.1)]
+clouds = []
+ratList = np.random.uniform(-0.5, 0.5, 10**3)
+for ratio in ratList:
+    clouds = clouds + [createEllipse(a=1-ratio, b=1, eps=0.1)]
 
-# vect = TDAvectorizer()
-# vect.fit(clouds)
+vect = TDAvectorizer()
+vect.fit(clouds)
 
 
     
