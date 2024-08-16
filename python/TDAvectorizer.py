@@ -3,7 +3,7 @@ import ripser
 
 from TDAvec import pmin, pmax, DiagToPD, \
     computeVPB, computePL, computePS, computeNL, computeVAB, computeECC, computePES, computePI,\
-    computeVPB_dim0, computeVPB_dim1
+    computeVPB_dim0, computeVPB_dim1, computeFDA
 
 def pmax(num, vec):
     """
@@ -43,7 +43,8 @@ def createEllipse(n = 100, a = 1, b = 1, eps = 0.1):
 class TDAvectorizer:
 
     def __init__(self, params = {"output": "vpb", "threshold": 2, "inf": None, "maxDim": 1,
-                                 "scale": None, "nGrid": 11, "quantiles": False, "tau": 0.3, "k":1, "sigma": 1}):
+                                 "scale": None, "nGrid": 11, "quantiles": False, "tau": 0.3,
+                                   "k":1, "sigma": 1, "kFDA":10}):
         self.diags = []
         self.params = params
         return 
@@ -120,6 +121,9 @@ class TDAvectorizer:
                 return np.array([computePES(d, homDim = homDim, scaleSeq = xSeq) for d in self.diags])
             elif output == "pi":
                 return np.array([computePI(d, homDim = homDim, xSeq = xSeq, ySeq = ySeq, sigma = sigma) for d in self.diags])
+            elif output == "fda":
+                maxD = self.findLimits(homDim)["maxD"]
+                return np.array([computeFDA(d, maxD, homDim=homDim, K=self.params["kFDA"]) for d in self.diags])
         elif type(homDim) == list:
             out = np.zeros( (len(self.diags), 0) )
             for d in homDim:
@@ -128,13 +132,13 @@ class TDAvectorizer:
             return out
     
 
-# clouds = []
-# ratList = np.random.uniform(-0.5, 0.5, 10**3)
-# for ratio in ratList:
-#     clouds = clouds + [createEllipse(a=1-ratio, b=1, eps=0.1)]
+clouds = []
+ratList = np.random.uniform(-0.5, 0.5, 10**3)
+for ratio in ratList:
+    clouds = clouds + [createEllipse(a=1-ratio, b=1, eps=0.1)]
 
-# vect = TDAvectorizer()
-# vect.fit(clouds)
+vect = TDAvectorizer()
+vect.fit(clouds)
 
 
     
