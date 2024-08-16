@@ -18,6 +18,7 @@ class Testing_Functions(unittest.TestCase):
         self.D[0][-1, 1] = 2
         self.scaleSeq = np.linspace(0, 2, 11)
 
+
     def test_PL_0(self):
         python = computePL(self.D, 0, self.scaleSeq)
         R = np.loadtxt("../R/pl_0.csv", skiprows=1)
@@ -129,6 +130,21 @@ class Testing_Functions(unittest.TestCase):
         pi1 = computePI(PD, homDim = 1, xSeq = xSeqH1, ySeq = ySeqH1, sigma = sigma)
         pi1_R = np.loadtxt("../R/pi_1.csv", skiprows=1)
         self.assertTrue( lists_are_equal(pi1, pi1_R))
+
+
+class Testing_Class(unittest.TestCase):
+    def setUp(self):
+        np.random.seed(42)
+        self.clouds = []
+        self.ratList = np.random.uniform(-0.5, 0.5, 10)
+        for ratio in self.ratList:
+            self.clouds = self.clouds + [createEllipse(a=1-ratio, b=1, eps=0.1)]
+        self.vect = TDAvectorizer.TDAvectorizer()
+        self.vect.fit(self.clouds)
+
+    def test_N(self):
+        self.assertEqual( len(self.vect.diags), 10)
+
 
 
 if __name__ == '__main__':
