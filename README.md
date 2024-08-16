@@ -24,11 +24,6 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 
 ## TODO
 
-* FDA in Python
-* FDA: compare to R
-* Quick FDA in Python
-* Quick FDA: compare to R
-* add FDA
 * reread/rewrite paper
 
 ### Done tasks
@@ -44,6 +39,9 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 * DONE: Aug 15, 2024, 13:00: Remove outliers: 
 * DONE: Aug 15, 2024, 16:53: Send to Umar:
 * DONE: Aug 16, 2024, 07:56: FDA in R 
+* DONE: Aug 16, 2024, 11:40: FDA in Python
+* DONE: Aug 16, 2024, 11:40: FDA: compare to R
+* DONE: Aug 16, 2024, 11:40: add FDA tables and plots
 
 
 ## MISC

@@ -241,6 +241,10 @@ wFL <- list(
 ```
 
 
+```{r}
+findLimits( list(DD), 1)
+```
+
 
 ```{r}
 fda_0 = generateForierFdata(list(DD), 0, 10, wFL)[1,,1]
@@ -249,6 +253,17 @@ fda <- c(fda_0, fda_1)
 write.csv(fda_0, "./fda_0.csv", row.names = FALSE)
 write.csv(fda_1, "./fda_1.csv", row.names = FALSE)
 ```
+
+```{r}
+generateForierFdata(list(DD), 1, 10, wFL)[,,1]
+```
+
+```{r}
+dd1 = DD[DD[,1]==1,]
+dd1 = dd1[order(-dd1[,2]),]
+dd1
+```
+
 
 ```{r}
 plot(NA, xlim = c(0, length(fda_0)), ylim = c( min(fda), max(fda)))
