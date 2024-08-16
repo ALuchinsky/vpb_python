@@ -41,7 +41,8 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 * DONE: Aug 15, 2024, 08:50: Add dim0+dim1 set of predictors: 
 * DONE: Aug 15, 2024, 11:54: Rewrite paper: 
 * DONE: Aug 15, 2024, 13:00: Remove outliers: 
-* DONE: Aug 15, 2024, 16:53: Send to Umar: 
+* DONE: Aug 15, 2024, 16:53: Send to Umar:
+* DONE: Aug 16, 2024, 07:56: FDA in R 
 
 
 ## MISC

@@ -14,14 +14,15 @@ R results for VPB vectorization
 library(TDAvec)
 ```
 
-# ComputeVPB
+# Data Set
+
 
 ```{r}
 N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
-plot(X[,1], X[,2])
+plot(X[,1], X[,2], asp = 1)
 write.csv(X, "./unitCircle.csv", row.names = FALSE)
 ```
 
@@ -40,6 +41,7 @@ write.csv(D, "./PD.csv", row.names = FALSE)
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 ```
 
+# ComputeVPB
 
 ```{r}
 # construct one-dimensional grid of scale values
@@ -156,5 +158,101 @@ ySeqH1 <- seq(minPH1,maxPH1,length.out=resP+1)
 sigma <- 0.5*(maxPH1-minPH1)/resP
 pi1 <- computePI(D,homDim=1,xSeqH1,ySeqH1,sigma) 
 write.csv(pi1, "./pi_1.csv", row.names = FALSE)
+```
+
+## FDA
+
+```{r}
+# get min and max values of dim0 and dim1 reatures of the presistense diagrams from the list
+findLimits <- function(D,homDim){
+  # D: a list of PDs
+  n <- length(D)
+  findMax <- function(pd,homDim){
+    pd <- pd[pd[,1]==homDim,2:3,drop=F] # extracting PD of dimension d
+    if (nrow(pd)>0) c(min(pd[,1]),
+                      max(pd[is.finite(pd[,2]),2]))
+    else rep(NA,2)
+  }
+  # body
+  minB <- numeric(length = n)
+  maxD <- numeric(length = n)
+  for (k in 1:n){
+    ans <- findMax(D[[k]],homDim)
+    minB[k] <- ans[1]
+    maxD[k] <- ans[2]
+  }
+  ans <- c(min(minB,na.rm = T),
+           max(maxD,na.rm = T))
+  names(ans) <- c('minB','maxD')
+  return(ans)
+}
+
+```
+
+
+```{r}
+# Computes FDA coefficients for the given PD
+generateForierFdata <- function(D, homDim, K, funcs, type='betti'){
+  nW <- length(funcs)
+  n <- length(D)
+  X <- array(dim = c(n, 2*K + 1 ,nW))
+  bound <- findLimits(D, homDim)
+  for (k in 1:n) {
+    pd <- D[[k]]
+    pd <- pd[pd[,1]==homDim,2:3,drop=F]
+    b <- pd[,1]/bound['maxD']; d <- pd[,2]/bound['maxD']
+    alpha <- d-b # persistence
+    
+    for (j in 0:(nW-1)) X[k,1,j+1] <- sum(funcs[[j+1]](b, d)*alpha)
+    
+    for (m in 1:K){
+      c <- 2*m*pi
+      if(type == "betti") {
+        alphasin <- sin(c*d)-sin(c*b)
+        alphacos <- cos(c*d)-cos(c*b)
+        for (j in 0:(nW-1)){
+          X[k,2*m,j+1] <- -sqrt(2)/c*sum(funcs[[j+1]](b, d)*alphacos)
+          X[k,2*m+1,j+1] <- sqrt(2)/c*sum(funcs[[j+1]](b, d)*alphasin)
+        }
+      }
+      else if(type == "silhouette") {
+        alphacos <- sin(c*b) + sin(c*d) - 2*sin(c*(b+d)/2)
+        alphasin <- cos(c*b) + cos(c*d) - 2*cos(c*(b+d)/2)
+        for (j in 0:(nW-1)){
+          cc <- -sqrt(2)/(c*c)
+          X[k,2*m,j+1] <- cc*sum(funcs[[j+1]](b, d)*alphacos)
+          X[k,2*m+1,j+1] <- cc*sum(funcs[[j+1]](b, d)*alphasin)
+        }
+      }
+      else {
+        cat("ERROR: unknown type ", type,"\n")
+      }
+    }
+    
+  }
+  return(X)
+}
+```
+
+```{r}
+wFL <- list(
+  "w0" = function(b, d) return(1)
+)
+```
+
+
+
+```{r}
+fda_0 = generateForierFdata(list(DD), 0, 10, wFL)[1,,1]
+fda_1 = generateForierFdata(list(DD), 1, 10, wFL)[1,,1]
+fda <- c(fda_0, fda_1)
+write.csv(fda_0, "./fda_0.csv", row.names = FALSE)
+write.csv(fda_1, "./fda_1.csv", row.names = FALSE)
+```
+
+```{r}
+plot(NA, xlim = c(0, length(fda_0)), ylim = c( min(fda), max(fda)))
+points(fda_0, type="o")
+points(fda_1, type="o", col="red")
 ```
 
