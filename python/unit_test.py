@@ -92,42 +92,37 @@ class Testing_Functions(unittest.TestCase):
         self.assertTrue( lists_are_equal(python, R))
 
     def test_VPB_0(self):
-        D = DiagToPD(self.D)
-        ySeqH0 = np.quantile(self.D[0][:,1], np.arange(0, 1.1, 0.2))
-        vpb0 = computeVPB(D, homDim=0, xSeq = [], ySeq = ySeqH0)
+        ySeqH0 = np.quantile(self.D[0][:,1] - self.D[0][:,0] , np.arange(0, 1.1, 0.2))
+        vpb0 = computeVPB(self.D, homDim=0, xSeq = [], ySeq = ySeqH0)
         R = np.loadtxt("../R/vpb_0.csv", skiprows=1)
         self.assertTrue( lists_are_equal(vpb0, R))
 
     def test_VPB_1(self):
-        PD = DiagToPD(self.D)
-        xSeqH1 = np.quantile(PD[1][:,0], np.arange(0, 1.1, 0.2))
-        ySeqH1 = np.quantile(PD[1][:,1], np.arange(0, 1.1, 0.2))
-        vpb1 = computeVPB(PD, homDim=1, xSeq = xSeqH1, ySeq = ySeqH1)
+        xSeqH1 = np.quantile(self.D[1][:,0], np.arange(0, 1.1, 0.2))
+        ySeqH1 = np.quantile(self.D[1][:,1]- self.D[1][:,0], np.arange(0, 1.1, 0.2))
+        vpb1 = computeVPB(self.D, homDim = 1, xSeq=xSeqH1, ySeq=ySeqH1)
         vpb1 = np.transpose(vpb1).reshape( (25,))
         R = np.loadtxt("../R/vpb_1.csv", skiprows=1)
         self.assertTrue( lists_are_equal(vpb1, R))
 
     def test_PI_0(self):
-        PD = DiagToPD(self.D)
         resB, resP = 5, 5
-        #
-        minPH0, maxPH0 = np.min(PD[0][:,1]), np.max(PD[0][:,1])
+        minPH0, maxPH0 = np.min(self.D[0][:,1]), np.max(self.D[0][:,1])
         ySeqH0 = np.linspace(minPH0, maxPH0, resP+1)
         xSeqH0 = np.zeros( resB+1)
         sigma = 0.5*(maxPH0-minPH0)/resP
-        pi0 = computePI(PD, homDim = 0, xSeq = xSeqH0, ySeq = ySeqH0, sigma = sigma)
+        pi0 = computePI(self.D, homDim = 0, xSeq = xSeqH0, ySeq = ySeqH0, sigma = sigma)
         pi0_R = np.loadtxt("../R/pi_0.csv", skiprows=1)
         self.assertTrue( lists_are_equal(pi0, pi0_R))
 
-    def test_PI_1(self):
-        PD = DiagToPD(self.D)
+    # def test_PI_1(self):
         resB, resP = 5, 5
-        minBH1, maxBH1 = np.min(PD[1][:,0]), np.max(PD[1][:,0])
+        minBH1, maxBH1 = np.min(self.D[1][:,0]), np.max(self.D[1][:,0])
         xSeqH1 = np.linspace(minBH1, maxBH1, resB+1)
-        minPH1, maxPH1 = np.min(PD[1][:,1]), np.max(PD[1][:,1])
+        minPH1, maxPH1 = np.min(self.D[1][:,1] - self.D[1][:,0]), np.max(self.D[1][:,1] - self.D[1][:,0])
         ySeqH1 = np.linspace(minPH1, maxPH1, resP+1)
         sigma = 0.5*(maxPH1-minPH1)/resP
-        pi1 = computePI(PD, homDim = 1, xSeq = xSeqH1, ySeq = ySeqH1, sigma = sigma)
+        pi1 = computePI(self.D, homDim = 1, xSeq = xSeqH1, ySeq = ySeqH1, sigma = sigma)
         pi1_R = np.loadtxt("../R/pi_1.csv", skiprows=1)
         self.assertTrue( lists_are_equal(pi1, pi1_R))
 

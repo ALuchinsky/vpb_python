@@ -26,6 +26,8 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 
 * reread/rewrite paper
 * unit tests for TDAvectorizer
+* VPB: PD -> D
+* VPB, PI: more simple tests, default xSeq, ySeq
 
 ### Done tasks
 

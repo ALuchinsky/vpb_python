@@ -131,12 +131,12 @@ def computeVPB_dim1(np.ndarray[np.float64_t, ndim=1] x,
                 vpb[i, j] += add
     return np.asarray(vpb)
 
-def computeVPB(PD, homDim, xSeq, ySeq, tau=0.3):
+def computeVPB(D, homDim, xSeq, ySeq, tau=0.3):
     """
     Compute the VPB vectorization using the given parameters.
 
     Parameters:
-        PD (list): Persistence Diagram (list of birth-persistence arrays for each dimension).
+        D (list): Persistence Diagram (list of birth-death arrays for each dimension).
         homDim (int): The dimension along which the homogeneity is computed.
         xSeq (numpy.ndarray): The x-coordinates of the grid points.
         ySeq (numpy.ndarray): The y-coordinates of the grid points.
@@ -145,8 +145,8 @@ def computeVPB(PD, homDim, xSeq, ySeq, tau=0.3):
     Returns:
         numpy.ndarray: The VPB matrix.
     """
-    x = PD[homDim][:,0]
-    y = PD[homDim][:,1]
+    x = D[homDim][:,0]
+    y = D[homDim][:,1] - x
     lam = tau * y
     if homDim == 0:
         return computeVPB_dim0(x, y, ySeq, lam)
@@ -348,12 +348,12 @@ def PSurfaceHk(point, y_lower, y_upper, x_lower, x_upper, sigma, maxP):
     wgt = y/maxP if y<maxP else 1
     return wgt*outer(out1, out2)
 
-def computePI(PD, homDim, xSeq, ySeq, sigma):
+def computePI(D, homDim, xSeq, ySeq, sigma):
     """
     Compute the surface Persistence Image (PI) vectorization for a given Persistence diagram
 
     Args:
-        PD (list): Persistence Diagram (list of birth-persistence arrays for each dimension).
+        D (list): Persistence Diagram (list of birth-death arrays for each dimension).
         homDim (int): The dimension to compute the surface probability density function for.
         xSeq (list): The x-axis sequence.
         ySeq (list): The y-axis sequence.
@@ -363,7 +363,8 @@ def computePI(PD, homDim, xSeq, ySeq, sigma):
         numpy.ndarray: The surface probability density function values for each data point.
 
     """
-    D_ = PD[homDim]
+    D_ = D[homDim]
+    D_[:,1] = D_[:,1] - D_[:,0]
     n_rows = D_.shape[0]
 
     resB = len(xSeq) - 1
