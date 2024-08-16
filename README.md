@@ -17,7 +17,7 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
     * `TDAvectorizer.py`: TDAvectorizer class
     * `test_TDAvectorizer.ipynb`: Jupyter notebook, testing TDAvectorizer
     * `setup.py`: Cython make file. See TDAvec_pyx_test.ipynb for instructions
-    * `TDAvec_pyx_test.ipynb`: Jupyter notebook, comparison with R results
+    * `unit_tests.py`: unit tests. You should run `python -m unittest unit_test.py` from the `python/` directory to run them.
 * R/: R files live here
     * `TDA_vec.Rmd`: extracting test results for different functions
 * paper/: paper files live here
@@ -25,6 +25,7 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 ## TODO
 
 * reread/rewrite paper
+* unit tests for TDAvectorizer
 
 ### Done tasks
 
