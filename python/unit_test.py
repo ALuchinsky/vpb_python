@@ -168,6 +168,12 @@ class Testing_Class(unittest.TestCase):
     def test_N(self):
         self.assertEqual( len(self.vect.diags), 10)
 
+    def test_dim_PS(self):
+        xSeq = np.linspace(-1, 1, 21)
+        ps = self.vect.transform(output = "ps", homDim = 0, xSeq = xSeq)
+        self.assertEqual( ps.shape, (10, 20))
+
+
 
 
 if __name__ == '__main__':
