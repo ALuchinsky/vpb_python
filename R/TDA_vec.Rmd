@@ -14,6 +14,20 @@ R results for VPB vectorization
 library(TDAvec)
 ```
 
+```{r}
+vect_to_str <- function(v) {
+  str = "["
+  for( i in 1:length(v)) {
+    str <- paste(str, v[i])
+    if (i<length(v)) {
+      str <- paste0(str, ",")
+    }
+  }
+  str <- paste0(str, "]")
+  str
+}
+```
+
 # Data Set
 
 
@@ -41,7 +55,7 @@ write.csv(D, "./PD.csv", row.names = FALSE)
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 ```
 
-# ComputeVPB
+## ComputeVPB
 
 ```{r}
 # construct one-dimensional grid of scale values
@@ -61,6 +75,18 @@ vpb1 <- computeVPB(D,homDim = 1,xSeqH1,ySeqH1,tau)
 write.csv(vpb1, "./vpb_1.csv", row.names = FALSE)
 ```
 
+```{r}
+resP <- 30; resB <- 30;
+minBH1 <- 0; maxBH1 <- 1
+minPH1 <- 0; maxPH1 <- 1.2
+xSeqH1 <- seq(minBH1,maxBH1,length.out=resB+1)
+ySeqH1 <- seq(minPH1,maxPH1,length.out=resP+1)
+pi1 <- computeVPB(D,homDim=1,xSeqH1,ySeqH1,tau = 0.3) 
+PImatr = matrix(pi1, ncol = length(xSeqH1)-1, byrow = FALSE)
+image(xSeqH1, ySeqH1, PImatr)
+```
+
+
 ## computePL
 
 ```{r}
@@ -74,6 +100,11 @@ write.csv(pl0, "./pl_0.csv", row.names = FALSE)
 pl1 <- computePL(DD, homDim=1, scaleSeq,k=1)
 write.csv(pl1, "./pl_1.csv", row.names = FALSE)
 ```
+
+```{r}
+cat(vect_to_str(pl1))
+```
+
 
 
 ## computePS
@@ -90,6 +121,11 @@ ps1 <- computePS(DD,homDim=1,scaleSeq,p=1)
 write.csv(ps1, "./ps_1.csv", row.names = FALSE)
 ```
 
+```{r}
+cat(vect_to_str(ps1))
+```
+
+
 ## computeNL
 
 
@@ -105,6 +141,11 @@ nl1 <- computeNL(DD,homDim=1,scaleSeq)
 write.csv(nl1, "./nl_1.csv", row.names = FALSE)
 ```
 
+```{r}
+cat(vect_to_str(nl1))
+```
+
+
 ## computeVAB
 
 ```{r}
@@ -117,6 +158,11 @@ vab_1 <- computeVAB(DD,homDim=1,scaleSeq)
 write.csv(vab_1, "./vab_1.csv", row.names = FALSE)
 ```
 
+```{r}
+cat(vect_to_str(vab_1))
+```
+
+
 ## computeECC
 
 ```{r}
@@ -125,6 +171,12 @@ ecc_0 <- computeECC(DD, 0, scaleSeq)
 write.csv(ecc_0, "./ecc_0.csv", row.names = FALSE)
 ecc_1 <- computeECC(DD, 1, scaleSeq)
 write.csv(ecc_1, "./ecc_1.csv", row.names = FALSE)
+```
+
+
+```{r}
+cat(vect_to_str(ecc_0),"\n")
+cat(vect_to_str(ecc_1),"\n")
 ```
 
 ## computePES
@@ -136,6 +188,12 @@ write.csv(pes_0, "./pes_0.csv", row.names = FALSE)
 pes_1 <- computePES(DD, 1, scaleSeq)
 write.csv(pes_1, "./pes_1.csv", row.names = FALSE)
 ```
+
+```{r}
+cat(vect_to_str(pes_0),"\n")
+cat(vect_to_str(pes_1),"\n")
+```
+
 
 ## computePI
 
@@ -159,6 +217,27 @@ sigma <- 0.5*(maxPH1-minPH1)/resP
 pi1 <- computePI(D,homDim=1,xSeqH1,ySeqH1,sigma) 
 write.csv(pi1, "./pi_1.csv", row.names = FALSE)
 ```
+
+```{r}
+cat(vect_to_str(pi1), "\n")
+```
+
+```{r}
+suppressPackageStartupMessages(library(plotly))
+```
+
+```{r}
+resP <- 20; resB <- 20;
+minBH1 <- 0; maxBH1 <- 0.5
+minMH1 <- 0; maxPH1 <- 1.2
+xSeqH1 <- seq(minBH1,maxBH1,length.out=resB+1)
+ySeqH1 <- seq(minPH1,maxPH1,length.out=resP+1)
+sigma <- 0.3*(maxPH1-minPH1)/resP
+pi1 <- computePI(D,homDim=1,xSeqH1,ySeqH1,sigma) 
+PImatr = matrix(pi1, ncol = length(xSeqH1)-1, byrow = FALSE)
+image(xSeqH1, ySeqH1, PImatr)
+```
+
 
 ## FDA
 
@@ -241,9 +320,6 @@ wFL <- list(
 ```
 
 
-```{r}
-findLimits( list(DD), 1)
-```
 
 
 ```{r}
@@ -253,6 +329,11 @@ fda <- c(fda_0, fda_1)
 write.csv(fda_0, "./fda_0.csv", row.names = FALSE)
 write.csv(fda_1, "./fda_1.csv", row.names = FALSE)
 ```
+
+```{r}
+cat(vect_to_str(fda_1), "\n")
+```
+
 
 ```{r}
 generateForierFdata(list(DD), 1, 10, wFL)[,,1]
