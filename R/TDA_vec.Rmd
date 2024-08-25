@@ -14,14 +14,29 @@ R results for VPB vectorization
 library(TDAvec)
 ```
 
-# ComputeVPB
+```{r}
+vect_to_str <- function(v) {
+  str = "["
+  for( i in 1:length(v)) {
+    str <- paste(str, v[i])
+    if (i<length(v)) {
+      str <- paste0(str, ",")
+    }
+  }
+  str <- paste0(str, "]")
+  str
+}
+```
+
+# Data Set
+
 
 ```{r}
 N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
-plot(X[,1], X[,2])
+plot(X[,1], X[,2], asp = 1)
 write.csv(X, "./unitCircle.csv", row.names = FALSE)
 ```
 
@@ -40,6 +55,7 @@ write.csv(D, "./PD.csv", row.names = FALSE)
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 ```
 
+## ComputeVPB
 
 ```{r}
 # construct one-dimensional grid of scale values
@@ -59,6 +75,18 @@ vpb1 <- computeVPB(D,homDim = 1,xSeqH1,ySeqH1,tau)
 write.csv(vpb1, "./vpb_1.csv", row.names = FALSE)
 ```
 
+```{r}
+resP <- 30; resB <- 30;
+minBH1 <- 0; maxBH1 <- 1
+minPH1 <- 0; maxPH1 <- 1.2
+xSeqH1 <- seq(minBH1,maxBH1,length.out=resB+1)
+ySeqH1 <- seq(minPH1,maxPH1,length.out=resP+1)
+pi1 <- computeVPB(D,homDim=1,xSeqH1,ySeqH1,tau = 0.3) 
+PImatr = matrix(pi1, ncol = length(xSeqH1)-1, byrow = FALSE)
+image(xSeqH1, ySeqH1, PImatr)
+```
+
+
 ## computePL
 
 ```{r}
@@ -72,6 +100,11 @@ write.csv(pl0, "./pl_0.csv", row.names = FALSE)
 pl1 <- computePL(DD, homDim=1, scaleSeq,k=1)
 write.csv(pl1, "./pl_1.csv", row.names = FALSE)
 ```
+
+```{r}
+cat(vect_to_str(pl1))
+```
+
 
 
 ## computePS
@@ -88,6 +121,11 @@ ps1 <- computePS(DD,homDim=1,scaleSeq,p=1)
 write.csv(ps1, "./ps_1.csv", row.names = FALSE)
 ```
 
+```{r}
+cat(vect_to_str(ps1))
+```
+
+
 ## computeNL
 
 
@@ -103,6 +141,11 @@ nl1 <- computeNL(DD,homDim=1,scaleSeq)
 write.csv(nl1, "./nl_1.csv", row.names = FALSE)
 ```
 
+```{r}
+cat(vect_to_str(nl1))
+```
+
+
 ## computeVAB
 
 ```{r}
@@ -115,6 +158,11 @@ vab_1 <- computeVAB(DD,homDim=1,scaleSeq)
 write.csv(vab_1, "./vab_1.csv", row.names = FALSE)
 ```
 
+```{r}
+cat(vect_to_str(vab_1))
+```
+
+
 ## computeECC
 
 ```{r}
@@ -123,6 +171,12 @@ ecc_0 <- computeECC(DD, 0, scaleSeq)
 write.csv(ecc_0, "./ecc_0.csv", row.names = FALSE)
 ecc_1 <- computeECC(DD, 1, scaleSeq)
 write.csv(ecc_1, "./ecc_1.csv", row.names = FALSE)
+```
+
+
+```{r}
+cat(vect_to_str(ecc_0),"\n")
+cat(vect_to_str(ecc_1),"\n")
 ```
 
 ## computePES
@@ -134,6 +188,12 @@ write.csv(pes_0, "./pes_0.csv", row.names = FALSE)
 pes_1 <- computePES(DD, 1, scaleSeq)
 write.csv(pes_1, "./pes_1.csv", row.names = FALSE)
 ```
+
+```{r}
+cat(vect_to_str(pes_0),"\n")
+cat(vect_to_str(pes_1),"\n")
+```
+
 
 ## computePI
 
@@ -156,5 +216,139 @@ ySeqH1 <- seq(minPH1,maxPH1,length.out=resP+1)
 sigma <- 0.5*(maxPH1-minPH1)/resP
 pi1 <- computePI(D,homDim=1,xSeqH1,ySeqH1,sigma) 
 write.csv(pi1, "./pi_1.csv", row.names = FALSE)
+```
+
+```{r}
+cat(vect_to_str(pi1), "\n")
+```
+
+```{r}
+suppressPackageStartupMessages(library(plotly))
+```
+
+```{r}
+resP <- 20; resB <- 20;
+minBH1 <- 0; maxBH1 <- 0.5
+minMH1 <- 0; maxPH1 <- 1.2
+xSeqH1 <- seq(minBH1,maxBH1,length.out=resB+1)
+ySeqH1 <- seq(minPH1,maxPH1,length.out=resP+1)
+sigma <- 0.3*(maxPH1-minPH1)/resP
+pi1 <- computePI(D,homDim=1,xSeqH1,ySeqH1,sigma) 
+PImatr = matrix(pi1, ncol = length(xSeqH1)-1, byrow = FALSE)
+image(xSeqH1, ySeqH1, PImatr)
+```
+
+
+## FDA
+
+```{r}
+# get min and max values of dim0 and dim1 reatures of the presistense diagrams from the list
+findLimits <- function(D,homDim){
+  # D: a list of PDs
+  n <- length(D)
+  findMax <- function(pd,homDim){
+    pd <- pd[pd[,1]==homDim,2:3,drop=F] # extracting PD of dimension d
+    if (nrow(pd)>0) c(min(pd[,1]),
+                      max(pd[is.finite(pd[,2]),2]))
+    else rep(NA,2)
+  }
+  # body
+  minB <- numeric(length = n)
+  maxD <- numeric(length = n)
+  for (k in 1:n){
+    ans <- findMax(D[[k]],homDim)
+    minB[k] <- ans[1]
+    maxD[k] <- ans[2]
+  }
+  ans <- c(min(minB,na.rm = T),
+           max(maxD,na.rm = T))
+  names(ans) <- c('minB','maxD')
+  return(ans)
+}
+
+```
+
+
+```{r}
+# Computes FDA coefficients for the given PD
+generateForierFdata <- function(D, homDim, K, funcs, type='betti'){
+  nW <- length(funcs)
+  n <- length(D)
+  X <- array(dim = c(n, 2*K + 1 ,nW))
+  bound <- findLimits(D, homDim)
+  for (k in 1:n) {
+    pd <- D[[k]]
+    pd <- pd[pd[,1]==homDim,2:3,drop=F]
+    b <- pd[,1]/bound['maxD']; d <- pd[,2]/bound['maxD']
+    alpha <- d-b # persistence
+    
+    for (j in 0:(nW-1)) X[k,1,j+1] <- sum(funcs[[j+1]](b, d)*alpha)
+    
+    for (m in 1:K){
+      c <- 2*m*pi
+      if(type == "betti") {
+        alphasin <- sin(c*d)-sin(c*b)
+        alphacos <- cos(c*d)-cos(c*b)
+        for (j in 0:(nW-1)){
+          X[k,2*m,j+1] <- -sqrt(2)/c*sum(funcs[[j+1]](b, d)*alphacos)
+          X[k,2*m+1,j+1] <- sqrt(2)/c*sum(funcs[[j+1]](b, d)*alphasin)
+        }
+      }
+      else if(type == "silhouette") {
+        alphacos <- sin(c*b) + sin(c*d) - 2*sin(c*(b+d)/2)
+        alphasin <- cos(c*b) + cos(c*d) - 2*cos(c*(b+d)/2)
+        for (j in 0:(nW-1)){
+          cc <- -sqrt(2)/(c*c)
+          X[k,2*m,j+1] <- cc*sum(funcs[[j+1]](b, d)*alphacos)
+          X[k,2*m+1,j+1] <- cc*sum(funcs[[j+1]](b, d)*alphasin)
+        }
+      }
+      else {
+        cat("ERROR: unknown type ", type,"\n")
+      }
+    }
+    
+  }
+  return(X)
+}
+```
+
+```{r}
+wFL <- list(
+  "w0" = function(b, d) return(1)
+)
+```
+
+
+
+
+```{r}
+fda_0 = generateForierFdata(list(DD), 0, 10, wFL)[1,,1]
+fda_1 = generateForierFdata(list(DD), 1, 10, wFL)[1,,1]
+fda <- c(fda_0, fda_1)
+write.csv(fda_0, "./fda_0.csv", row.names = FALSE)
+write.csv(fda_1, "./fda_1.csv", row.names = FALSE)
+```
+
+```{r}
+cat(vect_to_str(fda_1), "\n")
+```
+
+
+```{r}
+generateForierFdata(list(DD), 1, 10, wFL)[,,1]
+```
+
+```{r}
+dd1 = DD[DD[,1]==1,]
+dd1 = dd1[order(-dd1[,2]),]
+dd1
+```
+
+
+```{r}
+plot(NA, xlim = c(0, length(fda_0)), ylim = c( min(fda), max(fda)))
+points(fda_0, type="o")
+points(fda_1, type="o", col="red")
 ```
 

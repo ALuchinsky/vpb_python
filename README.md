@@ -4,7 +4,7 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 
 ## How to run:
 
-1. create python enviroment and install all packages from requirements.txt
+1. create python environment and install all packages from requirements.txt
 2. run `python setup.py build_ext --inplace` from the `python/` directory to compile pyx file
 3. launch `R/TDA_vec.Rmd` to get R results
 4. run through `test_TDAvectorizer.ipynb` notebook to see python results and save figures
@@ -13,30 +13,39 @@ The goal is to implement TDAvec library in python using R as a source (see GitHu
 
 ## File structure:
 * python/: python files live here
-    * `TDAvec.pyx`: Cython version of the package. 
+    * `TDAvec.pyx`: Cython version of the package. Note that you need to recompile it after each change
     * `TDAvectorizer.py`: TDAvectorizer class
     * `test_TDAvectorizer.ipynb`: Jupyter notebook, testing TDAvectorizer
     * `setup.py`: Cython make file. See TDAvec_pyx_test.ipynb for instructions
-    * `TDAvec_pyx_test.ipynb`: Jupyter notebook, comparison with R results
+    * `unit_tests.py`: unit tests. You should run `python -m unittest unit_test.py` from the `python/` directory to run them.
 * R/: R files live here
     * `TDA_vec.Rmd`: extracting test results for different functions
 * paper/: paper files live here
 
 ## TODO
 
+* reread/rewrite paper
+* unit tests for TDAvectorizer
+* VPB: PD -> D
+* VPB, PI: more simple tests, default xSeq, ySeq
 
-Done tasks
+### Done tasks
 
-* Create remote repository: done Aug 10, 2024, 09:55
-* Start the JOSS paper template: Aug 10, 2024, 10:05
-* Find other python libraries for vectorization: Aug 10, 2024, 16:39
-* Incorporate my into ML workflow
-* Redo simulations: done Aug 15, 2024, 07:38
-* Correct table: done Aug 15, 2024, 07:38
-* Add dim0+dim1 set of predictors: done Aug 15, 2024, 08:50
-* Rewrite paper: done Aug 15, 2024, 11:54
-* Remove outliers: done Aug 15, 2024, 13:00
-* Send to Umar: done Aug 15, 2024, 16:53
+* DONE: Aug 10, 2024, 09:55: Create remote repository: 
+* DONE: Aug 10, 2024, 10:05: Start the JOSS paper template
+* DONE: Aug 10, 2024, 16:39: Find other python libraries for vectorization
+* DONE: Aug 11, 2024, 16:39: Incorporate my into ML workflow
+* DONE: Aug 15, 2024, 07:38: Redo simulations: 
+* DONE: Aug 15, 2024, 07:38: Correct table: 
+* DONE: Aug 15, 2024, 08:50: Add dim0+dim1 set of predictors: 
+* DONE: Aug 15, 2024, 11:54: Rewrite paper: 
+* DONE: Aug 15, 2024, 13:00: Remove outliers: 
+* DONE: Aug 15, 2024, 16:53: Send to Umar:
+* DONE: Aug 16, 2024, 07:56: FDA in R 
+* DONE: Aug 16, 2024, 11:40: FDA in Python
+* DONE: Aug 16, 2024, 11:40: FDA: compare to R
+* DONE: Aug 16, 2024, 11:40: add FDA tables and plots
+
 
 ## MISC
 
